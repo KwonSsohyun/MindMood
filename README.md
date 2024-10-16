@@ -1,12 +1,12 @@
 # 🌱 MindMood
-<br/><br/>
-
-## 🌱 프로젝트 소개
-감정 기록으로 나를 이해하고, 건강한 마음으로 성장하는 여정
+**감정 기록으로 나를 이해하고, 건강한 마음으로 성장하는 여정**
 <br>
-> **🌐 배포 URL**
+> **🌐 배포 URL**  
 > [www.mindmood.co.kr](http://www.mindmood.co.kr)
 
+<br/>
+
+## 👀 프로젝트 소개
 - **감정 해소** : 스트레스를 줄이고 감정을 표현하세요.
 - **자기 성찰** : 감정을 기록하여 자신을 깊이 이해하세요.
 - **감정 추적** : 감정 변화를 쉽게 파악하세요.
@@ -63,24 +63,24 @@
 📁 MindMood
 │
 ├── 🧩 components
-│   ├── 📁 layout               # 공통 사용 컴포넌트
-│   │   ├── Header.tsx			# 헤더
+│   ├── 📁 layout                               # 공통 사용 컴포넌트
+│   │   ├── Header.tsx			        # 헤더
 │   │   ├── Footer.tsx				# 푸터
-│   │   └── Sidebar.tsx			# 사이드바
+│   │   └── Sidebar.tsx			        # 사이드바
 │   ├── 📁 calendar
 │   │   └── Calendar.tsx			# [메인] 감정 달력 컴포넌트
 │   ├── 📁 diary				# [서브 2,3,4] 감정일기 관련 컴포넌트 (작성, 목록, 상세, 수정, 삭제)
 │   │   ├── 📁 form				# [서브 2-1] 일기 작성
-│   │   │   ├── DiaryEntryForm.tsx	# [서브 2-1] 일기 전체를 관리하는 상위 컴포넌트
-│   │   │   ├── MoodCheck.tsx		# [서브 2-1] 1) 오늘의 기분 점검
-│   │   │   ├── EventRecord.tsx		# [서브 2-1] 2) 사건 기록
-│   │   │   ├── EmotionAnalysis.tsx	# [서브 2-1] 3) 감정 탐구
-│   │   │   ├── BehaviorAnalysis.tsx	# [서브 2-1] 4) 행동/반응 분석
-│   │   │   ├── ResultEvaluation.tsx	# [서브 2-1] 5) 결과 평가
+│   │   │   ├── DiaryEntryForm.tsx	        # [서브 2-1] 일기 전체를 관리하는 상위 컴포넌트
+│   │   │   ├── MoodCheck.tsx		        # [서브 2-1] 1) 오늘의 기분 점검
+│   │   │   ├── EventRecord.tsx		        # [서브 2-1] 2) 사건 기록
+│   │   │   ├── EmotionAnalysis.tsx	        # [서브 2-1] 3) 감정 탐구
+│   │   │   ├── BehaviorAnalysis.tsx	        # [서브 2-1] 4) 행동/반응 분석
+│   │   │   ├── ResultEvaluation.tsx	        # [서브 2-1] 5) 결과 평가
 │   │   │   ├── SelfSuggestion.tsx		# [서브 2-1] 6) 자기 제안
 │   │   ├── 📁 list				# [서브 3,4] 감정일기 목록 및 상세
 │   │   │   ├── DiaryList.tsx			# [서브 3] 일기 목록
-│   │   │   └── DiaryDetail.tsx		# [서브 4] 일기 상세, 수정, 삭제
+│   │   │   └── DiaryDetail.tsx		        # [서브 4] 일기 상세, 수정, 삭제
 │   ├── 📁 chart				# [서브 5] 월간 감정 차트
 │        ├── PieChart.tsx			# [서브 5-1] 원 그래프
 │        └── LineChart.tsx			# [서브 5-2] 선 그래프
@@ -99,7 +99,7 @@
 │   │   ├── NewDiary.tsx			# 일기 작성 페이지
 │   │   ├── ListDiary.tsx			# 일기 목록 페이지
 │   │   └── [id].tsx				# 일기 상세 페이지(상세, 수정, 삭제)
-│   └── chart.tsx					# 감정 차트 페이지
+│   └── chart.tsx			        # 감정 차트 페이지
 │
 ├── 🎨 styles
 │   ├── globals.css                      	# 글로벌 스타일 CSS 파일
@@ -108,7 +108,7 @@
 │   └── chart.css                   		# 차트 스타일
 │
 ├── 📜 types
-│   ├── diary.ts                         		# 일기 데이터 타입 정의
+│   ├── diary.ts                         	# 일기 데이터 타입 정의
 │   └── emotion.ts                       	# 감정 데이터 타입 정의
 │
 ├── 🛠️ utils
@@ -119,6 +119,7 @@
 ├── ⚙️ package.json                      	# 프로젝트 의존성 설정
 └── ⚙️ tsconfig.json                     	# TypeScript 설정 파일
 ```
+
 <br/>
 
 ## ⚙️ 개발 환경
