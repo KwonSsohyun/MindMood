@@ -5,9 +5,10 @@
  * - Calendar 컴포넌트 렌더링
  */
 import React from 'react';
+import { Box } from '@chakra-ui/react';
 
 export default function Home() {
    return <div>
-       Hello
+       <Box bg="red">Box 1</Box>
    </div>
 }
