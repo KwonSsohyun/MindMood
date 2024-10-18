@@ -94,6 +94,7 @@
 │   │   ├── createDiary.ts			# 일기 데이터 저장
 │   │   ├── updateDiary.ts			# 특정 일기 데이터 수정
 │   │   └── deleteDiary.ts			# 특정 일기 데이터 삭제
+│   ├── _app.tsx                        	# 공통 컴포넌트 정의
 │   ├── index.tsx                        	# 메인 페이지(감정 달력)
 │   ├── diary
 │   │   ├── NewDiary.tsx			# 일기 작성 페이지
