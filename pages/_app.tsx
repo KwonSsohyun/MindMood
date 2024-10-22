@@ -5,6 +5,7 @@
  * - 모든 페이지에서 공유되는 컴포넌트 정의
  */
 import React from 'react';
+import '../styles/globals.css';
 import { ChakraProvider } from '@chakra-ui/react';
 
 // ▶ MyApp 컴포넌트 정의

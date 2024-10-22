@@ -8,3 +8,33 @@
  * - 링크 및 버튼 스타일 설정
  * - 반응형 디자인
  */
+ @font-face {
+    font-family: 'EarlyFontDiary';
+    src: url('https://gcore.jsdelivr.net/gh/projectnoonnu/noonfonts_220508@1.0/EarlyFontDiary.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'EarlyFontDiary', sans-serif !important; /* 전체 폰트 변경 */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 달력 컴포넌트 */
+.rbc-today{
+    background-color: #FEFEE3 !important;
+}
+
+div.rbc-event{
+    background-color: transparent !important;
+}
+
+.rbc-event-content{
+    text-align: center !important;
+}
+
+.rbc-off-range-bg{
+    background-color: #F5F3F5 !important;
+}

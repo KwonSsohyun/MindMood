@@ -129,3 +129,17 @@
 - **IDE** : Visual Studio Code
 
 <br/>
+
+##  브랜드 컬러
+- 메인 컬러 : 민트 그린 (Mint Green): #A8E6CF
+- 서브 컬러 : 라벤더 (Lavender): #D7B2E6
+#2C6E49
+#4C956C
+
+#FEFEE3
+
+#FFC9B9
+
+#D68C45
+
+#2C6E49
