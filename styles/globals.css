@@ -22,7 +22,7 @@ body {
     box-sizing: border-box;
 }
 
-/* 달력 컴포넌트 */
+/* ▶ 메인 : 달력 컴포넌트 */
 .rbc-today{
     background-color: #FEFEE3 !important;
 }
@@ -37,4 +37,15 @@ div.rbc-event{
 
 .rbc-off-range-bg{
     background-color: #F5F3F5 !important;
+}
+
+.rbc-month-header{
+    background-color: #4C956C !important;
+    color: white;
+    height: 30px;
+    line-height: 30px;
+}
+
+.css-95qofs{
+    box-shadow: none !important;
 }

@@ -10,7 +10,9 @@ export default function Header() {
     return <>
         <Box as="header" position="fixed" top="0" left="0" width="100%" bg="white" boxShadow="md" zIndex="1000">
             <Flex justify="space-around" align="center" p={4}>
-                <Text fontSize="xl" fontWeight="bold">MindMood</Text>
+                <Link href="/" _hover={{ color: "#2C6E49", textDecoration: "none" }} >
+                    <Text fontSize="xl" fontWeight="bold">MindMood</Text>
+                </Link>
                 <Flex fontWeight="bold">
                     <Link 
                         href="/diary/ListDiary" 
@@ -18,7 +20,7 @@ export default function Header() {
                         fontSize="lg" 
                         textDecoration="none" // 밑줄 없애기
                         color="black" // 기본 색상 설정
-                        _hover={{ color: "blue.500", textDecoration: "underline" }} // 호버 시 색상 변경
+                        _hover={{ color: "#2C6E49", textDecoration: "none" }} // 호버 시 색상 변경
                     >
                         일기 목록
                     </Link>
@@ -28,7 +30,7 @@ export default function Header() {
                         fontSize="lg" 
                         textDecoration="none" 
                         color="black" 
-                        _hover={{ color: "blue.500", textDecoration: "underline" }} 
+                        _hover={{ color: "#2C6E49", textDecoration: "none" }} 
                     >
                         일기 작성
                     </Link>
@@ -38,7 +40,7 @@ export default function Header() {
                         fontSize="lg" 
                         textDecoration="none" 
                         color="black" 
-                        _hover={{ color: "blue.500", textDecoration: "underline" }} 
+                        _hover={{ color: "#2C6E49", textDecoration: "none" }} 
                     >
                         감정 차트
                     </Link>

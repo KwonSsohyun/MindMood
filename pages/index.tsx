@@ -6,16 +6,12 @@
  */
 import React from 'react';
 import { Box } from '@chakra-ui/react';
-import Header from '../components/layout/Header'; // Header 컴포넌트 import
-import Footer from '../components/layout/Footer'; // Footer 컴포넌트 import
 import Calendar from '../components/calendar/Calendar';
 
 export default function Home() {
    return <>
-        <Header/>
-        <Box mt="80px" mb="60px">
-            <Calendar/>
-        </Box>
-        <Footer/>
+         <Box as="main" width={{ base: "100%", md: "75%" }} mx="auto" mt="120px" mb="100px">
+            <Calendar />
+         </Box>
    </>
 }
