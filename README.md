@@ -22,7 +22,6 @@
 
 ### 테이블 구조
 - **`users`** : 사용자 정보
-- **`diary_entry`** : 전체 일기 데이터
 - **`mood_check`** : 기분 점검
 - **`event_record`** : 사건 기록
 - **`emotion_analysis`** : 감정 탐구
@@ -123,7 +122,6 @@ npm start             # 서버 실행
 │   │   └── Calendar.tsx			# [메인] 감정 달력 컴포넌트
 │   ├── 📁 diary				# [서브 2,3,4] 감정일기 관련 컴포넌트 (작성, 목록, 상세, 수정, 삭제)
 │   │   ├── 📁 form				# [서브 2-1] 일기 작성
-│   │   │   ├── DiaryEntryForm.tsx	        # [서브 2-1] 일기 전체를 관리하는 상위 컴포넌트
 │   │   │   ├── MoodCheck.tsx		        # [서브 2-1] 1) 오늘의 기분 점검
 │   │   │   ├── EventRecord.tsx		        # [서브 2-1] 2) 사건 기록
 │   │   │   ├── EmotionAnalysis.tsx	        # [서브 2-1] 3) 감정 탐구
