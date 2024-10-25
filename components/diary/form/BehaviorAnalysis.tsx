@@ -6,10 +6,10 @@
  * - 행동 방식의 영향 작성
  * - 감정 미표현 이유 작성
  * 
- * 🗃️ DB 테이블명       : behavior_analysis
+ * 🗃️ DB 테이블명      : behavior_analysis
  * 📊 DB 컬럼명
  * - id                 : 고유식별자 (Primary Key)
- * - user_id            : 사용자 ID (Foreign Key, NULL 가능)
+ * - user_id            : 사용자 ID (Foreign Key, users 테이블의 user_id 참조, NULL 가능)
  * - expression         : 감정 표현 방식 (TEXT)
  * - impact             : 감정에 미친 영향 (TEXT)
  * - reason             : 미표현 이유 (TEXT)
