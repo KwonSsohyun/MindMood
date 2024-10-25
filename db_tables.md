@@ -1,15 +1,15 @@
 # UserSignupForm 컴포넌트
 ### 🗃️ 테이블명: `users` (유저)
 
-| 컬럼명            | 설명                            | 제약 조건                |
-|-------------------|---------------------------------|--------------------------|
-| `id`              | 고유 식별자                     | Primary Key              |
-| `username`        | 사용자 이름                    | NULL 불가                |
-| `user_id`         | 사용자 ID                      | Unique, NULL 불가        |
-| `email`           | 사용자 이메일                  | Unique, NULL 가능        |
-| `password`        | 사용자 비밀번호                | NULL 불가                |
-| `created_at`      | 생성일                          | Timestamp                |
-| `selected_items`  | 선택한 항목 목록 (배열 형식)  | VARCHAR[]                |
+| 컬럼명            | 설명                                        | 제약 조건                |
+|-------------------|---------------------------------------------|--------------------------|
+| `id`              | 고유 식별자                                 | Primary Key              |
+| `username`        | 사용자 이름                                | NULL 불가                |
+| `user_id`         | 사용자 ID                                  | Unique, NULL 불가        |
+| `email`           | 사용자 이메일                              | Unique, NULL 가능        |
+| `password`        | 사용자 비밀번호                            | NULL 불가                |
+| `created_at`      | 생성일                                      | Timestamp                |
+| `selected_items`  | 선택한 항목 목록 (기분, 사건, 감정, 행동, 결과, 제안) | VARCHAR                  |
 
 
 # MoodCheck 컴포넌트

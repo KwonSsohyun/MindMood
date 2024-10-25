@@ -20,6 +20,52 @@
 - **데이터베이스 종류** : PostgreSQL
 - **연결 라이브러리** : `Prisma`를 사용하여 PostgreSQL과 연결
 
+### 설치 및 설정
+1. **PostgreSQL 데이터베이스 및 사용자 생성**
+```bash
+# PostgreSQL에 'postgres' 사용자로 접속
+psql -U postgres
+
+# 데이터베이스 및 사용자 생성
+CREATE DATABASE mindmood;
+CREATE USER mindmood WITH ENCRYPTED PASSWORD '0116';
+GRANT ALL PRIVILEGES ON DATABASE mindmood TO mindmood;
+
+# 스키마 권한 설정
+GRANT USAGE ON SCHEMA public TO mindmood;
+GRANT CREATE ON SCHEMA public TO mindmood;
+
+# 사용자에게 데이터베이스 생성 권한 부여
+ALTER USER mindmood CREATEDB;
+
+# 변경사항 확인
+\dn+ public
+
+# 데이터베이스 연결 종료
+\q
+```
+2. **Prisma 클라이언트 설치**
+```bash
+npm install @prisma/client
+```
+3. **Prisma 초기화**
+```bash
+npx prisma init
+```
+4. **📦.env 파일 데이터베이스 연결 설정**
+```plaintext
+DATABASE_URL="postgresql://mindmood:0116@localhost:5432/mindmood"
+```
+5. **🗄️schema.prisma 파일 테이블 정의** : 테이블명 및 컬럼 정의
+6. **데이터베이스 테이블 생성 및 구조 수정 명령어**
+```bash
+npx prisma migrate dev
+```
+7. **애플리케이션 빌드 전 명령어(배포환경 DB작동 설정)**
+```bash
+npx prisma migrate deploy
+```
+
 ### 테이블 구조
 - **`users`** : 사용자 정보
 - **`mood_check`** : 기분 점검
