@@ -36,11 +36,15 @@ npm start             # 서버 실행
 <br/>
 
 ## 🖥️ 화면 설계
-### 1. 메인 - 감정 달력
+### 1. 사용자 관리
+- 회원가입 기능
+- 로그인 기능
+
+### 2. 메인 - 감정 달력
 - 감정 이모지 표현 (최고, 좋음, 보통, 안좋음, 많이 나쁨)
 - GNB 헤더 : 감정 차트 | 일기 목록 | 일기 작성
 
-### 2. 서브 - 일기 기록
+### 3. 서브 - 일기 기록
 - **구성 요소** : 사건, 감정, 행동, 결과, 제안
 
   1. **오늘의 기분 점검**
@@ -67,13 +71,13 @@ npm start             # 서버 실행
   6. **자기 제안**
      - 느낀 점과 다짐 : 긍정적인 메시지나 다짐 작성
 
-### 3. 서브 - 일기 목록
+### 4. 서브 - 일기 목록
 - 리스트 형식 표시
 
-### 4. 서브 - 일기 상세
+### 5. 서브 - 일기 상세
 - 수정 및 삭제 기능
 
-### 5. 서브 - 감정 차트
+### 6. 서브 - 감정 차트
 - 월간 감정 분석 (원그래프, 선그래프)
 
 <br/>
@@ -87,6 +91,9 @@ npm start             # 서버 실행
 │   │   ├── Header.tsx			        # 헤더
 │   │   ├── Footer.tsx				# 푸터
 │   │   └── Sidebar.tsx			        # 사이드바
+│   ├── 📁 auth                                # 사용자 인증 컴포넌트
+│   │   ├── UserSignupForm.tsx		        # 회원가입
+│   │   └── UserLoginForm.tsx			# 로그인
 │   ├── 📁 calendar
 │   │   └── Calendar.tsx			# [메인] 감정 달력 컴포넌트
 │   ├── 📁 diary				# [서브 2,3,4] 감정일기 관련 컴포넌트 (작성, 목록, 상세, 수정, 삭제)
@@ -110,14 +117,18 @@ npm start             # 서버 실행
 │   └── diaryStore.tsx                 		# 일기 상태 관리
 │
 ├── 🔗 pages
-│   ├── 📁 api                                  # 데이터베이스 API
+│   ├── 📁 api                                 # 데이터베이스 API
+│   │   ├── createUser.ts			# 사용자 데이터 생성
+│   │   ├── loginUser.ts			# 사용자 로그인
 │   │   ├── getDiaries.ts			# 전체 일기 데이터 조회
 │   │   ├── createDiary.ts			# 일기 데이터 저장
 │   │   ├── updateDiary.ts			# 특정 일기 데이터 수정
 │   │   └── deleteDiary.ts			# 특정 일기 데이터 삭제
 │   ├── _app.tsx                        	# 공통 컴포넌트 정의
 │   ├── index.tsx                        	# 메인 페이지(감정 달력)
-│   ├── diary
+│   ├── signup.tsx                        	# 회원가입 페이지
+│   ├── login.tsx                        	# 로그인 페이지
+│   ├── 📁 diary                               # 일기 관련 페이지
 │   │   ├── NewDiary.tsx			# 일기 작성 페이지
 │   │   ├── ListDiary.tsx			# 일기 목록 페이지
 │   │   └── [id].tsx				# 일기 상세 페이지(수정, 삭제)
@@ -125,9 +136,9 @@ npm start             # 서버 실행
 │
 ├── 🎨 styles
 │   ├── globals.css                      	# 글로벌 스타일 CSS 파일
-│   ├── calendar.css                		# 감정 달력 스타일
-│   ├── diary.css                   		# 일기 스타일
-│   └── chart.css                   		# 차트 스타일
+│   ├── calendar.module.css                     # 감정 달력 스타일
+│   ├── diary.module.css                        # 일기 스타일
+│   └── chart.module.css                        # 차트 스타일
 │
 ├── 📜 types
 │   └── diary.ts                         	# 일기 데이터 타입 정의
@@ -144,7 +155,7 @@ npm start             # 서버 실행
 <br/>
 
 ## 🎨 브랜드 컬러
-<img src="https://github.com/user-attachments/assets/b578e8ab-f19f-400e-a2cd-782aab9305b0" alt="MindMood Brand Color" style="width: 30%; height: auto;">
+<img src="https://i.pinimg.com/564x/9c/86/d2/9c86d29ae3d83d9c8d9307f2519ff059.jpg" alt="MindMood Brand Color" style="width: 30%; height: auto;">
 
 ### 1. 메인 컬러
 - **주색** : `#4C956C` (라이트 그린)  
