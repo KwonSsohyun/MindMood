@@ -104,12 +104,12 @@ npm start             # 서버 실행
 │   │   │   ├── EmotionAnalysis.tsx	        # [서브 2-1] 3) 감정 탐구
 │   │   │   ├── BehaviorAnalysis.tsx	        # [서브 2-1] 4) 행동/반응 분석
 │   │   │   ├── ResultEvaluation.tsx	        # [서브 2-1] 5) 결과 평가
-│   │   │   ├── SelfSuggestion.tsx		# [서브 2-1] 6) 자기 제안
+│   │   │   └── SelfSuggestion.tsx		# [서브 2-1] 6) 자기 제안
 │   │   ├── 📁 list				# [서브 3,4] 감정일기 목록 및 상세
 │   │   │   ├── DiaryList.tsx			# [서브 3] 일기 목록
 │   │   │   ├── DiaryDetail.tsx                 # [서브 4-1] 일기 상세(수정, 삭제)
 │   │   │   └── DiaryEdit.tsx		        # [서브 4-2] 일기 수정
-│   ├── 📁 chart				# [서브 5] 월간 감정 차트
+│   └── 📁 chart				# [서브 5] 월간 감정 차트
 │        ├── PieChart.tsx			# [서브 5-1] 원 그래프
 │        └── LineChart.tsx			# [서브 5-2] 선 그래프
 │
