@@ -16,6 +16,31 @@
 
 <br/>
 
+## 🗄️ 데이터베이스
+- **데이터베이스 종류** : PostgreSQL
+- **연결 라이브러리** : `Prisma`를 사용하여 PostgreSQL과 연결
+
+### 테이블 구조
+- **`users`** : 사용자 정보
+- **`diary_entry`** : 전체 일기 데이터
+- **`mood_check`** : 기분 점검
+- **`event_record`** : 사건 기록
+- **`emotion_analysis`** : 감정 탐구
+- **`behavior_analysis`** : 행동/반응 분석
+- **`result_evaluation`** : 결과 평가
+- **`self_suggestion`** : 자기 제안
+
+### API
+`pages/api` 폴더 내에 데이터베이스와 상호작용하는 API 엔드포인트 구현
+- `createUser` : 사용자 생성 API
+- `loginUser` : 사용자 로그인 API
+- `getDiaries` : 전체 일기 데이터 조회 API
+- `createDiary` : 일기 데이터 저장 API
+- `updateDiary` : 특정 일기 데이터 수정 API
+- `deleteDiary` : 특정 일기 데이터 삭제 API
+
+<br/>
+
 ## ⚙️ 개발 환경
 - **Runtime Environment** : `Node.js (v20.15.1)`
 - **Framework** : `Next.js`
