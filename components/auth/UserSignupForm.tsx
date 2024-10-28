@@ -4,15 +4,15 @@
  * 회원가입
  * - 회원가입 페이지
  * 
- * 🗃️ DB 테이블명       : users
+ * 🗃️ DB 테이블명           : auth_user
  * 📊 DB 컬럼명
- * - id                 : 고유식별자 (Primary Key)
- * - username           : 사용자 이름 (NULL 불가)
- * - user_id            : 사용자 ID (Unique, NULL 불가)
- * - email              : 사용자 이메일 (Unique, NULL 가능)
- * - password           : 사용자 비밀번호 (NULL 불가)
- * - created_at         : 생성일 (Timestamp)
- * - selected_items     : 선택한 항목 목록 (기분, 사건, 감정, 행동, 결과, 제안) (VARCHAR)
+ * - user_seq               : 고유식별자 (Primary Key)
+ * - user_id                : 사용자 ID (Unique, NULL 불가)
+ * - name                   : 사용자 이름 (NULL 불가)
+ * - email                  : 사용자 이메일 (Unique, NULL 가능)
+ * - password               : 사용자 비밀번호 (NULL 불가)
+ * - create_date            : 생성일 (Timestamp)
+ * - select_item            : 선택된 카테고리 ID 목록(배열)(INT[]) (기분, 사건, 감정, 행동, 결과, 제안)
  */
 import React, { useState } from 'react';
 import { Box, Button, Flex, Text, Input, FormControl, FormLabel } from '@chakra-ui/react';

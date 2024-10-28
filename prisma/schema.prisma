@@ -13,12 +13,42 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users {
-  id            Int      @id @default(autoincrement())    // 고유 식별자
-  username      String                                    // 사용자 이름 (NULL 불가, 기본적으로 NULL 불가)
-  user_id       String   @unique                          // 사용자 ID (Unique, NULL 불가)
-  email         String?  @unique                          // 사용자 이메일 (Unique, NULL 가능)
-  password      String                                    // 사용자 비밀번호 (NULL 불가, 기본적으로 NULL 불가)
-  created_at    DateTime @default(now())                  // 생성일 (Timestamp)
-  selected_items String?                                  // 선택한 항목 목록 (기분, 사건, 감정, 행동, 결과, 제안) (VARCHAR)
+// User 테이블
+model AuthUser {
+  user_seq     Int       @id @default(autoincrement())
+  user_id      String    @unique
+  name         String
+  email        String    @unique
+  password     String
+  create_date  DateTime  @default(now()) // 계정 생성일
+  select_item  Int[]     // 선택된 카테고리 ID 목록 (배열)
+  diaries      Diary[]   // 관계: AuthUser - Diary
+}
+
+// 카테고리 테이블
+model SelectCategory {
+  category_id   Int       @id @default(autoincrement())
+  category_name String     @unique
+}
+
+// Diary 테이블
+model Diary {
+  diary_seq       Int       @id @default(autoincrement())
+  user_id         String      @relation(fields: [user_id], references: [user_id])
+  mood_level      Int
+  mood_emoji      String
+  event_info      String?
+  event_with      String?
+  emotion_type    String?
+  emotion_detail  String?
+  behavior_style  String?
+  behavior_effect String?
+  behavior_reason String?
+  result_outcome  String?
+  result_plan     String?
+  self_goal       String?
+  create_date     DateTime   @default(now())
+  update_date     DateTime   @updatedAt
+
+  @@index([user_id])
 }

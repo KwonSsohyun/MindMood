@@ -4,15 +4,6 @@
  * 1) 오늘의 기분 점검
  * - 감정 강도 선택
  * - 감정 이모지 선택
- * 
- * 🗃️ DB 테이블명       : mood_check
- * 📊 DB 컬럼명
- * - id                 : 고유식별자 (Primary Key)
- * - user_id            : 사용자 ID (Foreign Key, users 테이블의 user_id 참조, NULL 가능)
- * - intensity          : 감정 강도 (1-10점) (INT)
- * - emoji              : 감정 이모지 (기쁨, 행복, 설렘, 중립, 불안, 짜증, 우울, 슬픔, 후회, 분노) (TEXT)
- * - created_at         : 작성일 (Timestamp)
- * - updated_at         : 수정일 (Timestamp)
  */
 import React, { useState } from 'react';
 import { Box, Button, Flex, Text, Input } from '@chakra-ui/react';
