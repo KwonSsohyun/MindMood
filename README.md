@@ -23,20 +23,25 @@
 ### 설치 및 설정
 1. **PostgreSQL 데이터베이스 및 사용자 생성**
 ```bash
-# PostgreSQL에 'postgres' 사용자로 접속
+# PostgreSQL 'postgres' 사용자 접속
 psql -U postgres
 
-# 데이터베이스 및 사용자 생성
-CREATE DATABASE mindmood;
-CREATE USER mindmood WITH ENCRYPTED PASSWORD '0116';
-GRANT ALL PRIVILEGES ON DATABASE mindmood TO mindmood;
+# mindmood 데이터베이스 연결
+\c mindmood
 
-# 스키마 권한 설정
+# public 스키마 소유자 확인
+SELECT nspname AS schema_name, pg_roles.rolname AS owner
+FROM pg_catalog.pg_namespace
+JOIN pg_catalog.pg_roles ON pg_roles.oid = pg_namespace.nspowner
+WHERE nspname = 'public';
+
+# public 스키마의 소유자 mindmood 변경
+ALTER SCHEMA public OWNER TO postgres;
+ALTER SCHEMA public OWNER TO mindmood;
+
+# mindmood 사용자에게 권한 부여
 GRANT USAGE ON SCHEMA public TO mindmood;
 GRANT CREATE ON SCHEMA public TO mindmood;
-
-# 사용자에게 데이터베이스 생성 권한 부여
-ALTER USER mindmood CREATEDB;
 
 # 변경사항 확인
 \dn+ public
@@ -67,13 +72,9 @@ npx prisma migrate deploy
 ```
 
 ### 테이블 구조
-- **`users`** : 사용자 정보
-- **`mood_check`** : 기분 점검
-- **`event_record`** : 사건 기록
-- **`emotion_analysis`** : 감정 탐구
-- **`behavior_analysis`** : 행동/반응 분석
-- **`result_evaluation`** : 결과 평가
-- **`self_suggestion`** : 자기 제안
+- **`auth_user`** : 사용자 정보
+- **`select_category`** : 선택 가능한 카테고리 목록
+- **`diary`** : 사용자 일기 기록
 
 ### API
 `pages/api` 폴더 내에 데이터베이스와 상호작용하는 API 엔드포인트 구현

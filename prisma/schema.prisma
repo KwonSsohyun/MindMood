@@ -33,8 +33,8 @@ model SelectCategory {
 
 // Diary 테이블
 model Diary {
-  diary_seq       Int       @id @default(autoincrement())
-  user_id         String      @relation(fields: [user_id], references: [user_id])
+  diary_seq       Int      @id @default(autoincrement())
+  user_id         String
   mood_level      Int
   mood_emoji      String
   event_info      String?
@@ -47,8 +47,10 @@ model Diary {
   result_outcome  String?
   result_plan     String?
   self_goal       String?
-  create_date     DateTime   @default(now())
-  update_date     DateTime   @updatedAt
+  create_date     DateTime @default(now())
+  update_date     DateTime @updatedAt
+
+  user            AuthUser @relation(fields: [user_id], references: [user_id]) // 관계 정의
 
   @@index([user_id])
 }
