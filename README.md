@@ -49,41 +49,48 @@ GRANT CREATE ON SCHEMA public TO mindmood;
 # 데이터베이스 연결 종료
 \q
 ```
+
 2. **Prisma 클라이언트 설치**
 ```bash
 npm install @prisma/client
 ```
+
 3. **Prisma 초기화**
 ```bash
 npx prisma init
 ```
+
 4. **📦.env 파일 데이터베이스 연결 설정**
 ```plaintext
 DATABASE_URL="postgresql://mindmood:0116@localhost:5432/mindmood"
 ```
-5. **🗄️schema.prisma 파일 테이블 정의** : 테이블명 및 컬럼 정의
+
+5. **🗄️schema.prisma 파일 테이블 정의** (테이블명 및 컬럼 정의) <br/><br/>
+
 6. **데이터베이스 테이블 생성 및 구조 수정 명령어**
 ```bash
 npx prisma migrate dev
 ```
+
 7. **애플리케이션 빌드 전 명령어(배포환경 DB작동 설정)**
 ```bash
 npx prisma migrate deploy
 ```
+<br/>
 
 ### 테이블 구조
 - **`auth_user`** : 사용자 정보
-- **`select_category`** : 선택 가능한 카테고리 목록
 - **`diary`** : 사용자 일기 기록
+- **`select_category`** : 선택 가능한 카테고리 목록
 
 ### API
 `pages/api` 폴더 내에 데이터베이스와 상호작용하는 API 엔드포인트 구현
-- `createUser` : 사용자 생성 API
-- `loginUser` : 사용자 로그인 API
-- `getDiaries` : 전체 일기 데이터 조회 API
-- `createDiary` : 일기 데이터 저장 API
-- `updateDiary` : 특정 일기 데이터 수정 API
-- `deleteDiary` : 특정 일기 데이터 삭제 API
+- **`createUser`** : 사용자 생성 API
+- **`loginUser`** : 사용자 로그인 API
+- **`getDiaries`** : 전체 일기 데이터 조회 API
+- **`createDiary`** : 일기 데이터 저장 API
+- **`updateDiary`** : 특정 일기 데이터 수정 API
+- **`deleteDiary`** : 특정 일기 데이터 삭제 API
 
 <br/>
 
@@ -92,6 +99,7 @@ npx prisma migrate deploy
 - **Framework** : `Next.js`
 - **Frontend Library** : `React`
 - **Type Checking** : `TypeScript`
+- **Database** : `PostgreSQL`
 - **IDE** : `Visual Studio Code`
 
 <br/>
