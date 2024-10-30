@@ -8,7 +8,7 @@
  * - 링크 및 버튼 스타일 설정
  * - 반응형 디자인
  */
- @font-face {
+@font-face {
     font-family: 'EarlyFontDiary';
     src: url('https://gcore.jsdelivr.net/gh/projectnoonnu/noonfonts_220508@1.0/EarlyFontDiary.woff2') format('woff2');
     font-weight: normal;

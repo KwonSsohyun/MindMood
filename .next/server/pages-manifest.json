@@ -2,6 +2,13 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
+  "/login": "pages/login.js",
   "/": "pages/index.js",
+  "/api/session": "pages/api/session.js",
+  "/api/loginUser": "pages/api/loginUser.js",
+  "/diary/NewDiary": "pages/diary/NewDiary.js",
+  "/diary/ListDiary": "pages/diary/ListDiary.js",
+  "/chart": "pages/chart.js",
+  "/api/createUser": "pages/api/createUser.js",
   "/signup": "pages/signup.js"
 }

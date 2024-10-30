@@ -4,11 +4,9 @@
  * 메인 페이지
  * - Calendar 컴포넌트 렌더링
  */
-import React from 'react';
-import { Box } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import { Box, Text } from '@chakra-ui/react';
 import Calendar from '../components/calendar/Calendar';
-
-// SSR fetch(getDiaries.ts)
 
 export default function Home() {
    return <>

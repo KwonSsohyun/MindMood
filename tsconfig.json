@@ -18,7 +18,11 @@
     "jsx": "preserve"
   },
   "include": [
+    "./types", 
+    "./node_modules/@types",
+    "next-session.d.ts",
     "next-env.d.ts",
+    "types/**/*.d.ts",
     "**/*.ts",
     "**/*.tsx"
   ],

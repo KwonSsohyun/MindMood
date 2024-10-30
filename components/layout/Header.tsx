@@ -3,49 +3,255 @@
  *
  * 공통 헤더 레이아웃
  */
-import React from 'react';
-import { Box, Flex, Link, Text } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import { Box, Flex, Text, Link, IconButton, Button, useToast, Drawer, DrawerBody, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton } from '@chakra-ui/react';
+import { useDisclosure } from '@chakra-ui/react';
+import { FiLogOut, FiMenu } from 'react-icons/fi';
+import { useRouter } from 'next/router';
+import { User } from '../../types/user';
+import { useSession } from '../../context/SessionContext';
 
 export default function Header() {
+
+    const router = useRouter();
+    const toast = useToast();
+    const { isOpen, onClose, onOpen } = useDisclosure();
+    const { user, loading, setUser } = useSession();
+
+    const handleLogout = async () => {
+        try {
+            const response = await fetch('/api/session', {
+                method: 'DELETE', // 로그아웃 처리
+            });
+
+            if (response.ok) {
+                setUser(null); // 세션에서 사용자 정보 삭제
+                toast({
+                    title: "로그아웃 성공",
+                    description: "로그아웃되었습니다.",
+                    status: "success",
+                    duration: 3000,
+                    isClosable: true,
+                });
+                // 로그인 페이지로 이동
+                router.push('/login');
+
+            } else {
+                const errorData = await response.json();
+                toast({
+                    title: "로그아웃 실패",
+                    description: errorData.message,
+                    status: "error",
+                    duration: 3000,
+                    isClosable: true,
+                });
+            }
+        } catch (error) {
+            console.error('로그아웃 오류:', error);
+            toast({
+                title: "오류",
+                description: "로그아웃 중 오류가 발생했습니다.",
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            });
+        }
+    };
+
+    // 로딩 중일 경우 표시할 컴포넌트
+    if (loading) return <p>Loading...</p>;
+
     return <>
         <Box as="header" position="fixed" top="0" left="0" width="100%" bg="white" boxShadow="md" zIndex="1000">
-            <Flex justify="space-around" align="center" p={4}>
+            <Flex justify={{ base: "space-between", md: "space-around" }} ml={{ base: 4, md: 0 }} align="center" p={4}>
                 <Link href="/" _hover={{ color: "#2C6E49", textDecoration: "none" }} >
                     <Text fontSize="xl" fontWeight="bold">MindMood</Text>
                 </Link>
-                <Flex fontWeight="bold">
-                    <Link 
-                        href="/diary/ListDiary" 
-                        mx={4} 
-                        fontSize="lg" 
-                        textDecoration="none" // 밑줄 없애기
-                        color="black" // 기본 색상 설정
-                        _hover={{ color: "#2C6E49", textDecoration: "none" }} // 호버 시 색상 변경
-                    >
-                        일기 목록
-                    </Link>
-                    <Link 
-                        href="/diary/NewDiary" 
-                        mx={4} 
-                        fontSize="lg" 
-                        textDecoration="none" 
-                        color="black" 
-                        _hover={{ color: "#2C6E49", textDecoration: "none" }} 
-                    >
-                        일기 작성
-                    </Link>
-                    <Link 
-                        href="/chart" 
-                        mx={4} 
-                        fontSize="lg" 
-                        textDecoration="none" 
-                        color="black" 
-                        _hover={{ color: "#2C6E49", textDecoration: "none" }} 
-                    >
-                        감정 차트
-                    </Link>
+                <Flex align="center" justify="center" display={{ base: "block", md: "none" }}> {/* 모바일에서만 표시 */}
+                    <IconButton
+                            icon={<FiMenu />}
+                            aria-label="Menu"
+                            variant="ghost"
+                            alignSelf="center" 
+                            onClick={onOpen}
+                            display={{ base: "block", md: "none" }}
+                    />
+                </Flex>
+                <Flex display={{ base: "none", md: "flex" }} fontWeight="bold" align="center"> {/* 데스크탑에서만 표시 */}
+                    <Flex align="center">
+                        <Flex align="center">
+                            {user && ( // user가 존재할 때만 메뉴 표시
+                            <>
+                            <Link 
+                                href="/diary/ListDiary" 
+                                mx={10} 
+                                fontSize="lg" 
+                                textDecoration="none" // 밑줄 없애기
+                                color="black" // 기본 색상 설정
+                                _hover={{ color: user ? "#2C6E49" : "black"}}
+                                onClick={(e) => {
+                                    if (!user) {
+                                        e.preventDefault(); // 링크 클릭 시 기본 동작 방지
+                                    } else {
+                                        router.push('/diary/ListDiary'); // 세션이 있을 때 페이지 이동
+                                    }
+                                }}
+                            >
+                                일기 목록
+                            </Link>
+                            <Link 
+                                href="/diary/NewDiary" 
+                                mx={10} 
+                                fontSize="lg" 
+                                textDecoration="none" 
+                                color="black" 
+                                _hover={{ color: user ? "#2C6E49" : "black"}}
+                                onClick={(e) => {
+                                    if (!user) {
+                                        e.preventDefault(); // 링크 클릭 시 기본 동작 방지
+                                    } else {
+                                        router.push('/diary/NewDiary'); // 세션이 있을 때 페이지 이동
+                                    }
+                                }}
+                            >
+                                일기 작성
+                            </Link>
+                            <Link 
+                                href="/chart" 
+                                mx={10} 
+                                fontSize="lg" 
+                                textDecoration="none" 
+                                color="black" 
+                                _hover={{ color: user ? "#2C6E49" : "black"}}
+                                onClick={(e) => {
+                                    if (!user) {
+                                        e.preventDefault(); // 링크 클릭 시 기본 동작 방지
+                                    } else {
+                                        router.push('/chart'); // 세션이 있을 때 페이지 이동
+                                    }
+                                }}
+                            >
+                                감정 차트
+                            </Link>
+                            </>
+                            )}
+                        </Flex>
+                        <Flex align="center">
+                            {/* 세션이 있을 때만 로그아웃 버튼 표시 */}
+                            {user && ( 
+                                <Button
+                                    aria-label="Logout"
+                                    leftIcon={<FiLogOut />}
+                                    onClick={handleLogout}
+                                    ml={4}
+                                    variant="outline"
+                                    color="#D68C45"
+                                    borderColor="#D68C45"
+                                    fontWeight="bold"
+                                    _hover={{ bg: "#D68C45", color: "white" }}
+                                >
+                                    {user.user_id} 로그아웃
+                                </Button>
+                            )}
+                        </Flex>
+                    </Flex>
                 </Flex>
             </Flex>
         </Box>      
+        
+        {/* 드로어 추가 */}
+        <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+                <DrawerOverlay />
+                <DrawerContent>
+                    <DrawerCloseButton />
+                    <DrawerHeader>메뉴</DrawerHeader>
+                    <DrawerBody>
+                        <Flex direction="column" justify="space-between" height="100%">
+                            <Flex direction="column" mb={4}>
+                                {user && ( // user가 존재할 때만 메뉴 표시
+                                <>
+                                <Link 
+                                    href="/diary/ListDiary" 
+                                    mb={6} 
+                                    fontSize="2xl" 
+                                    fontWeight="bold"
+                                    textDecoration="none" // 밑줄 없애기
+                                    color="black" // 기본 색상 설정
+                                    _hover={{ color: user ? "#2C6E49" : "black"}}
+                                    onClick={(e) => {
+                                        if (!user) {
+                                            e.preventDefault(); // 링크 클릭 시 기본 동작 방지
+                                        } else {
+                                            router.push('/diary/ListDiary'); // 세션이 있을 때 페이지 이동
+                                            onClose(); // 드로어 닫기
+                                        }
+                                    }}
+                                >
+                                    일기 목록
+                                </Link>
+                                <Link 
+                                    href="/diary/NewDiary" 
+                                    mb={6} 
+                                    fontSize="2xl" 
+                                    fontWeight="bold"
+                                    textDecoration="none" 
+                                    color="black" 
+                                    _hover={{ color: user ? "#2C6E49" : "black"}}
+                                    onClick={(e) => {
+                                        if (!user) {
+                                            e.preventDefault(); // 링크 클릭 시 기본 동작 방지
+                                        } else {
+                                            router.push('/diary/NewDiary'); // 세션이 있을 때 페이지 이동
+                                            onClose(); // 드로어 닫기
+                                        }
+                                    }}
+                                >
+                                    일기 작성
+                                </Link>
+                                <Link 
+                                    href="/chart" 
+                                    mb={20} 
+                                    fontSize="2xl" 
+                                    fontWeight="bold"
+                                    textDecoration="none" 
+                                    color="black" 
+                                    _hover={{ color: user ? "#2C6E49" : "black"}}
+                                    onClick={(e) => {
+                                        if (!user) {
+                                            e.preventDefault(); // 링크 클릭 시 기본 동작 방지
+                                        } else {
+                                            router.push('/chart'); // 세션이 있을 때 페이지 이동
+                                            onClose(); // 드로어 닫기
+                                        }
+                                    }}
+                                >
+                                    감정 차트
+                                </Link>
+                            </>
+                            )}
+                            </Flex>
+                            <Flex direction="column" mb={10}>
+                            {user && ( 
+                                <Button
+                                    onClick={() => {
+                                        handleLogout(); // 로그아웃 처리
+                                        onClose(); // 드로어 닫기
+                                    }}
+                                    leftIcon={<FiLogOut />}
+                                    variant="outline"
+                                    color="#D68C45"
+                                    borderColor="#D68C45"
+                                    fontWeight="bold"
+                                    _hover={{ bg: "#D68C45", color: "white" }}
+                                >
+                                    {user.user_id} 로그아웃
+                                </Button>
+                            )}
+                            </Flex>
+                        </Flex>
+                    </DrawerBody>
+                </DrawerContent>
+        </Drawer>
+
     </>
 }

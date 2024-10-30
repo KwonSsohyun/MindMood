@@ -6,12 +6,12 @@
  */
 import React from 'react';
 import { Box } from '@chakra-ui/react';
-import MoodCheck from '../../components/diary/form/MoodCheck';
+import DiaryEntryForm from '../../components/diary/form/DiaryEntryForm';
 
-export default function Home() {
+export default function NewDiary() {
    return <>
          <Box as="main" width={{ base: "80%", md: "60%" }} mx="auto" mt="140px" mb="100px">
-            <MoodCheck />
+            <DiaryEntryForm />
          </Box>
    </>
 }
