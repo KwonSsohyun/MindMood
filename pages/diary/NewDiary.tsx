@@ -10,7 +10,7 @@ import DiaryEntryForm from '../../components/diary/form/DiaryEntryForm';
 
 export default function NewDiary() {
    return <>
-         <Box as="main" width={{ base: "80%", md: "60%" }} mx="auto" mt="140px" mb="100px">
+         <Box as="main" width={{ base: "85%", md: "60%" }} mx="auto" mt="140px" mb="100px">
             <DiaryEntryForm />
          </Box>
    </>

@@ -15,7 +15,7 @@
  * - select_item            : 선택된 카테고리 ID 목록(배열)(INT[]) (기분, 사건, 감정, 행동, 결과, 제안)
  */
 import React, { useState } from 'react';
-import { Box, Button, Flex, Text, Input, FormControl, FormLabel, useToast } from '@chakra-ui/react';
+import { Box, Button, Flex, Text, Input, FormControl, FormLabel, Link, useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/router'; // Next.js 라우터(페이지 이동)
 import { useSession } from '../../context/SessionContext'; // 세션 훅 가져오기
 import bcrypt from 'bcryptjs';
@@ -167,12 +167,20 @@ export default function UserSignupForm() {
                         bg="#4C956C" 
                         color="white"
                         width="full"
+                        px={6}
+                        py={6}
                         _hover={{ bg: "#2C6E49" }} // 호버 시 색상 변경
                         _active={{ bg: "#2C6E49" }} // 클릭 시 색상 변경
                     >
                         회원가입
                     </Button>
                 </form>
+                <Flex justify="center" mt={10}>
+                        <Text color="#919191" mr={2}>이미 계정이 있으신가요?</Text>
+                        <Link href="/login" color="#4C956C" fontWeight="bold">
+                            로그인
+                        </Link>
+                </Flex>
             </Box>
         </Flex>        
     </>

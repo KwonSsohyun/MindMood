@@ -107,6 +107,8 @@ export default function UserLoginForm() {
                         bg="#4C956C" 
                         color="white"
                         width="full"
+                        px={6}
+                        py={6}
                         _hover={{ bg: "#2C6E49" }}
                         _active={{ bg: "#2C6E49" }}
                     >

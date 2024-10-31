@@ -30,10 +30,8 @@ export const SessionProvider = ({ children }) => {
         // 세션 상태에 따라 리디렉션 처리
         if (!loading) {
             if (!user && (router.pathname !== '/login' && router.pathname !== '/signup')) {
-                console.log("여기 들어옴??");
                 router.push('/login'); // 세션이 없으면 로그인 페이지로 이동
             } else if (user && (router.pathname === '/login' || router.pathname === '/signup')) {
-                console.log("여기 들어옴!!");
                 router.push('/'); // 로그인된 상태에서 로그인 또는 회원가입 페이지에 접근하면 메인 페이지로 리다이렉션
             }
         }
