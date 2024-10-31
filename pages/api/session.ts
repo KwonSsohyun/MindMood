@@ -24,11 +24,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             await req.session.save(); // 세션 저장
             user = req.session.user; // 업데이트된 사용자 정보
             console.log('세션에 저장된 user : ', user);
-            return res.status(200).json({ user });
+            return res.status(200).json({ user: req.session.user });
         }
 
         if (user) {
-            return res.status(200).json({ user }); // 사용자 정보를 응답으로 반환
+            return res.status(200).json({ user: req.session.user }); // 사용자 정보를 응답으로 반환
         } else {
             return res.status(401).json({ message: '세션이 존재하지 않습니다.' }); // 세션이 없을 때
         }
@@ -40,7 +40,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         req.session.user = user; // 세션에 사용자 정보를 저장
         await req.session.save(); // 세션 저장
         console.log('세션 user : ', user); 
-        return res.status(200).json({ message: '로그인 성공', user }); // 성공 응답
+        return res.status(200).json({ message: '로그인 성공', user: req.session.user }); // 성공 응답
 
     } else if (req.method === 'DELETE') { // 로그아웃 처리
         console.log('세션 DELETE'); 

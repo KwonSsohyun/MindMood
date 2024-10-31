@@ -3,12 +3,12 @@
  *
  * 공통 헤더 레이아웃
  */
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Box, Flex, Text, Link, IconButton, Button, useToast, Drawer, DrawerBody, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton } from '@chakra-ui/react';
 import { useDisclosure } from '@chakra-ui/react';
+import { Spinner, Center } from '@chakra-ui/react';
 import { FiLogOut, FiMenu } from 'react-icons/fi';
 import { useRouter } from 'next/router';
-import { User } from '../../types/user';
 import { useSession } from '../../context/SessionContext';
 
 export default function Header() {
@@ -59,15 +59,38 @@ export default function Header() {
     };
 
     // 로딩 중일 경우 표시할 컴포넌트
-    if (loading) return <p>Loading...</p>;
+    if (loading) {
+        return (
+            <Center height="100vh">
+                <Spinner
+                    thickness="4px"
+                    speed="0.65s"
+                    emptyColor="#F5F3F5"
+                    color="#4C956C"
+                    size="xl"
+                />
+            </Center>
+        );
+    }
 
     return <>
         <Box as="header" position="fixed" top="0" left="0" width="100%" bg="white" boxShadow="md" zIndex="1000">
             <Flex justify={{ base: "space-between", md: "space-around" }} ml={{ base: 4, md: 0 }} align="center" p={4}>
-                <Link href="/" _hover={{ color: "#2C6E49", textDecoration: "none" }} >
+                <Link 
+                    _hover={{ color: "#2C6E49", textDecoration: "none" }} 
+                    onClick={(e) => {
+                        if (!user) {
+                            e.preventDefault(); // 링크 클릭 시 기본 동작 방지
+                        } else {
+                            router.push('/'); // 세션이 있을 때 페이지 이동
+                        }
+                    }}
+                >
                     <Text fontSize="xl" fontWeight="bold">MindMood</Text>
                 </Link>
                 <Flex align="center" justify="center" display={{ base: "block", md: "none" }}> {/* 모바일에서만 표시 */}
+                    {/* 세션이 있을 때만 로그아웃 버튼 표시 */}
+                    {user && ( 
                     <IconButton
                             icon={<FiMenu />}
                             aria-label="Menu"
@@ -75,7 +98,10 @@ export default function Header() {
                             alignSelf="center" 
                             onClick={onOpen}
                             display={{ base: "block", md: "none" }}
+                            _hover={{ bg: 'transparent' }} // 마우스 오버 시 배경색을 투명하게 설정
+                            _active={{ bg: 'transparent' }} // 클릭할 때 배경색을 투명하게 설정
                     />
+                    )}
                 </Flex>
                 <Flex display={{ base: "none", md: "flex" }} fontWeight="bold" align="center"> {/* 데스크탑에서만 표시 */}
                     <Flex align="center">
@@ -83,7 +109,6 @@ export default function Header() {
                             {user && ( // user가 존재할 때만 메뉴 표시
                             <>
                             <Link 
-                                href="/diary/ListDiary" 
                                 mx={10} 
                                 fontSize="lg" 
                                 textDecoration="none" // 밑줄 없애기
@@ -100,7 +125,6 @@ export default function Header() {
                                 일기 목록
                             </Link>
                             <Link 
-                                href="/diary/NewDiary" 
                                 mx={10} 
                                 fontSize="lg" 
                                 textDecoration="none" 
@@ -117,7 +141,6 @@ export default function Header() {
                                 일기 작성
                             </Link>
                             <Link 
-                                href="/chart" 
                                 mx={10} 
                                 fontSize="lg" 
                                 textDecoration="none" 
@@ -171,7 +194,6 @@ export default function Header() {
                                 {user && ( // user가 존재할 때만 메뉴 표시
                                 <>
                                 <Link 
-                                    href="/diary/ListDiary" 
                                     mb={6} 
                                     fontSize="2xl" 
                                     fontWeight="bold"
@@ -190,7 +212,6 @@ export default function Header() {
                                     일기 목록
                                 </Link>
                                 <Link 
-                                    href="/diary/NewDiary" 
                                     mb={6} 
                                     fontSize="2xl" 
                                     fontWeight="bold"
@@ -209,7 +230,6 @@ export default function Header() {
                                     일기 작성
                                 </Link>
                                 <Link 
-                                    href="/chart" 
                                     mb={20} 
                                     fontSize="2xl" 
                                     fontWeight="bold"
