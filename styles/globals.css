@@ -22,6 +22,7 @@ body {
     box-sizing: border-box;
 }
 
+
 /* ▶ 메인 : 달력 컴포넌트 */
 .rbc-today{
     background-color: #FEFEE3 !important;
@@ -48,4 +49,48 @@ div.rbc-event{
 
 .css-95qofs{
     box-shadow: none !important;
+}
+
+
+/* ▶ 서브 : 일기 컴포넌트 */
+.react-datepicker {
+    border: 2px solid #e2e8f0 !important;
+    border-top-left-radius: 0.5rem !important;
+    border-top-right-radius: 0.5rem !important;
+}
+.react-datepicker__header {
+    background-color: #D6E7DB !important;
+}
+
+.react-datepicker__month-container{
+    float: none;
+}
+.custom-calendar {
+    border: 1px solid #d6e7db !important;
+    border-radius: 10px !important;
+    padding: 10px !important;
+    background-color: #fff !important;
+}
+
+.react-calendar {
+    width: 100% !important;
+    max-width: 300px !important;
+    margin: 0 auto !important;
+}
+
+.react-calendar__tile {
+    padding: 10px !important;
+    border-radius: 5px!important; 
+}
+.react-datepicker__day--selected{
+    background-color: #4C956C !important;
+    color: white !important;
+}
+.react-calendar__tile--active {
+    background-color: #4C956C !important;
+    color: white !important;
+}
+
+.react-calendar__tile--hover {
+    background-color: #D6E7DB !important;
 }

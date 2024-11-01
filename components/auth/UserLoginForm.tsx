@@ -9,6 +9,7 @@ import { Box, Button, Flex, Text, Input, FormControl, FormLabel, useToast, Link 
 import { useRouter } from 'next/router'; 
 import { useSession } from '../../context/SessionContext'; // 세션 훅 가져오기
 
+
 export default function UserLoginForm() {
 
     const [userId, setUserId] = useState('');

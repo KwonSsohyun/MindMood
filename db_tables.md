@@ -41,5 +41,6 @@
 | `result_outcome`  | VARCHAR               |                                    |                      | 사건 결과                                  |
 | `result_plan`     | VARCHAR               |                                    |                      | 미래 행동 계획                             |
 | `self_goal`       | VARCHAR               |                                    |                      | 느낀점 및 다짐                             |
-| `create_date`     | TIMESTAMP             | NOT NULL                           | DEFAULT CURRENT_TIMESTAMP    | 일기 작성일                        |
-| `update_date`     | TIMESTAMP             | NOT NULL                           | DEFAULT CURRENT_TIMESTAMP     | 일기 수정일                       |
+| `entry_date`      | TIMESTAMP             | NOT NULL                           |                      | 일기 작성일                                |
+| `create_date`     | TIMESTAMP             | NOT NULL                           | DEFAULT CURRENT_TIMESTAMP     | 생성일                        |
+| `update_date`     | TIMESTAMP             |                                    |                      | 수정일                                     |

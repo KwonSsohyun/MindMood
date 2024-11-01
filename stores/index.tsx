@@ -1,4 +1,4 @@
-import { DiaryStore } from './diaryStore';
+import { DiaryStore } from './DiaryStore';
 
 // ▶ MobX 스토어 인스턴스 생성
 const diaryStore = new DiaryStore();

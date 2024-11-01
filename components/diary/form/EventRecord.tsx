@@ -10,11 +10,12 @@
  * - event_info              : 주요 사건 (VARCHAR)
  * - event_with              : 함께한 사람 (VARCHAR)
  */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Flex, Box, Text, Textarea, Input, Button } from '@chakra-ui/react';
+import ButtonStyle from '../../common/ButtonStyle';
 
 
-export default function EventRecord({ diaryStore, onNext }) {
+export default function EventRecord({ diaryStore, currentStep, onPrevious, onNext }) {
 
     // ● 주요 사건(event_info)
     const [eventInfo, setEventInfo] = useState(null);
@@ -30,10 +31,16 @@ export default function EventRecord({ diaryStore, onNext }) {
 
     // ▶ MobX 스토어 저장 및 다음 단계 이동
     const handleNext = () => {
-        diaryStore.setEventInfo(eventInfo);
-        diaryStore.setEventWith(eventWith);
+        diaryStore.eventInfo = eventInfo;
+        diaryStore.eventWith = eventWith;
         onNext();
     };
+
+    // ▶ 이전 버튼 클릭 시 상태 업데이트
+    useEffect(() => {
+        setEventInfo(diaryStore.eventInfo);
+        setEventWith(diaryStore.eventWith);
+    }, [diaryStore.eventInfo, diaryStore.eventWith]);
 
     // 사용자 정의 사람 추가
     const handleAddCustomPerson = () => {
@@ -138,25 +145,16 @@ export default function EventRecord({ diaryStore, onNext }) {
                     </Flex>
                 </Box>
             </Flex>
-            <Flex direction="column" p={4} mx={{ base: 0, md: 200 }}>
-                <Button 
-                    bg="#4C956C" 
-                    color="white"
-                    width="full"
-                    px={6}
-                    py={6}
-                    mt={4}
-                    onClick={handleNext}
-                    isDisabled={ !eventInfo || !eventWith }
-                    _hover={{ bg: "#2C6E49" }}
-                    _active={{ bg: "#2C6E49" }}
-                >
-                    다음
-                </Button>
-            </Flex>
         </Flex>
 
-        <Text>1.오늘의 기분 점검 - 감정 강도 : {diaryStore.getMoodLevel()}</Text>
-        <Text>1.오늘의 기분 점검 - 감정 이모지 : {diaryStore.getMoodEmoji()}</Text>
+        <ButtonStyle 
+            onPrevious={onPrevious} 
+            onNext={handleNext} 
+            currentStep={currentStep} 
+            isNextDisabled={ !eventInfo || !eventWith }
+        />
+
+        <Text>1.오늘의 기분 점검 - 감정 강도 : {diaryStore.moodLevel}</Text>
+        <Text>1.오늘의 기분 점검 - 감정 이모지 : {diaryStore.moodEmoji}</Text>
     </>
 }

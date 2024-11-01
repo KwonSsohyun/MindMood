@@ -10,11 +10,11 @@
  * - mood_level              : 감정 강도(1-10) (INT, NOT NULL)
  * - mood_emoji              : 감정 이모지 (VARCHAR, NOT NULL)
  */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Flex, Box, Text, Button, Slider, SliderTrack, SliderFilledTrack, SliderThumb } from '@chakra-ui/react';
+import ButtonStyle from '../../common/ButtonStyle';
 
-
-export default function MoodCheck({ diaryStore, onNext }) {
+export default function MoodCheck({ diaryStore, currentStep, onPrevious, onNext }) {
 
     // ● 선택된 감정 상태(mood_emoji)
     const [moodEmoji, setMoodEmoji] = useState(null);
@@ -36,11 +36,17 @@ export default function MoodCheck({ diaryStore, onNext }) {
 
     // ▶ MobX 스토어 저장 및 다음 단계 이동
     const handleNext = () => {
-        diaryStore.setMoodLevel(moodLevel); // MobX 스토어에 감정 강도 저장
-        diaryStore.setMoodEmoji(moodEmoji); // MobX 스토어에 감정 이모지 저장
+        diaryStore.moodLevel = moodLevel; // MobX 스토어에 감정 강도 저장
+        diaryStore.moodEmoji = moodEmoji; // MobX 스토어에 감정 이모지 저장
         // 다음 단계로 이동
         onNext();
     };
+
+    // ▶ 이전 버튼 클릭 시 상태 업데이트
+    useEffect(() => {
+        setMoodLevel(diaryStore.moodLevel ?? 1);
+        setMoodEmoji(diaryStore.moodEmoji);
+    }, [diaryStore.moodEmoji, diaryStore.moodLevel]);
 
     return <>
         <Flex direction="column" p={4} mb={3}>
@@ -77,7 +83,7 @@ export default function MoodCheck({ diaryStore, onNext }) {
                     <Text fontSize="xl" fontWeight="bold" mb={5}>감정 강도</Text>
                     <Flex wrap="wrap">
                     <Slider 
-                        defaultValue={1} 
+                        value={moodLevel} 
                         min={1} 
                         max={10} 
                         step={1} 
@@ -85,7 +91,7 @@ export default function MoodCheck({ diaryStore, onNext }) {
                         size="lg"
                     >
                         <SliderTrack>
-                            <SliderFilledTrack bg="#4C956C" />
+                            <SliderFilledTrack bg={moodLevel > 0 ? "#4C956C" : "gray.200"} /> {/* 선택된 값이 있을 경우 색상 설정 */}
                         </SliderTrack>
                         <SliderThumb />
                     </Slider>
@@ -100,34 +106,28 @@ export default function MoodCheck({ diaryStore, onNext }) {
                 </Box>
             </Flex>
         </Flex>
-        <Flex direction="column" p={4} mx={{ base: 0, md: 200 }}>
-            <Button 
-                bg="#4C956C" 
-                color="white"
-                width="full"
-                px={6}
-                py={6}
-                mt={4}
-                onClick={handleNext}
-                isDisabled={ !moodEmoji || moodLevel < 1 } // 버튼 비활성화(필수 입력 체크)
-                _hover={{ bg: "#2C6E49" }}
-                _active={{ bg: "#2C6E49" }}
-            >
-                다음
-            </Button>
-        </Flex>
 
-        <Text>1.오늘의 기분 점검 - 감정 강도 : {diaryStore.getMoodLevel()}</Text>
-        <Text>1.오늘의 기분 점검 - 감정 이모지 : {diaryStore.getMoodEmoji()}</Text><br/>
-        <Text>2.사건 기록 - 주요 사건 : {diaryStore.getEventInfo()}</Text>
-        <Text>2.사건 기록 - 함께한 사람 : {diaryStore.getEventWith()}</Text><br/>
-        <Text>3.감정 탐구 - 주요 감정 : {diaryStore.getEmotionType()}</Text>
-        <Text>3.감정 탐구 - 감정 이유 : {diaryStore.getEmotionDetail()}</Text><br/>
-        <Text>4.행동/반응 분석 - 행동 기록 : {diaryStore.getBehaviorStyle()}</Text>
-        <Text>4.행동/반응 분석 - 행동 영향 : {diaryStore.getBehaviorEffect()}</Text>
-        <Text>4.행동/반응 분석 - 미표현 이유 : {diaryStore.getBehaviorReason()}</Text><br/>
-        <Text>5.결과 평가 - 사건 결과 : {diaryStore.getResultOutcome()}</Text>
-        <Text>5.결과 평가 - 원하는 행동 : {diaryStore.getResultPlan()}</Text><br/>
-        <Text>6.자기 제안 - 느낀점과 다짐 : {diaryStore.getSelfGoal()}</Text>
+        <ButtonStyle 
+            onPrevious={onPrevious} 
+            onNext={handleNext} 
+            currentStep={currentStep} 
+            isNextDisabled={ !moodEmoji || moodLevel < 1 } // 비활성화 조건 전달
+        />
+
+
+        <Text>일기 작성일 : {diaryStore.entryDate}</Text>
+        <Text>사용자 ID : {diaryStore.userId}</Text>
+        <Text>1.오늘의 기분 점검 - 감정 강도 : {diaryStore.moodLevel}</Text>
+        <Text>1.오늘의 기분 점검 - 감정 이모지 : {diaryStore.moodEmoji}</Text><br/>
+        <Text>2.사건 기록 - 주요 사건 : {diaryStore.eventInfo}</Text>
+        <Text>2.사건 기록 - 함께한 사람 : {diaryStore.eventWith}</Text><br/>
+        <Text>3.감정 탐구 - 주요 감정 : {diaryStore.emotionType}</Text>
+        <Text>3.감정 탐구 - 감정 이유 : {diaryStore.emotionDetail}</Text><br/>
+        <Text>4.행동/반응 분석 - 행동 기록 : {diaryStore.behaviorStyle}</Text>
+        <Text>4.행동/반응 분석 - 행동 영향 : {diaryStore.behaviorEffect}</Text>
+        <Text>4.행동/반응 분석 - 미표현 이유 : {diaryStore.behaviorReason}</Text><br/>
+        <Text>5.결과 평가 - 사건 결과 : {diaryStore.resultOutcome}</Text>
+        <Text>5.결과 평가 - 원하는 행동 : {diaryStore.resultPlan}</Text><br/>
+        <Text>6.자기 제안 - 느낀점과 다짐 : {diaryStore.selfGoal}</Text>
     </>
 }

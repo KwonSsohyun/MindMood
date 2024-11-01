@@ -2,11 +2,9 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/diary/NewDiary": "pages/diary/NewDiary.js",
-  "/login": "pages/login.js",
-  "/api/session": "pages/api/session.js",
   "/": "pages/index.js",
   "/diary/ListDiary": "pages/diary/ListDiary.js",
-  "/api/loginUser": "pages/api/loginUser.js",
-  "/chart": "pages/chart.js"
+  "/login": "pages/login.js",
+  "/api/createDiary": "pages/api/createDiary.js",
+  "/diary/NewDiary": "pages/diary/NewDiary.js"
 }

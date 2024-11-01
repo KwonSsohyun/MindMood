@@ -8,165 +8,195 @@
  * - 리액트 컴포넌트와 실시간 연동
  */
 import { makeAutoObservable } from 'mobx';
+import axios from 'axios';
 
 export class DiaryStore {
     // ▶ 일기 필드
-    diarySeq: number;       // 고유 식별자
-    userId: string;         // 사용자 ID
-    moodLevel: number;      // 감정 강도
-    moodEmoji: string;      // 감정 이모지
-    eventInfo: string;      // 주요 사건
-    eventWith: string;      // 함께한 사람
-    emotionType: string;    // 주요 감정
-    emotionDetail: string;  // 감정 이유
-    behaviorStyle: string;  // 행동 기록
-    behaviorEffect: string; // 행동 영향
-    behaviorReason: string; // 미표현 이유
-    resultOutcome: string;  // 사건 결과
-    resultPlan: string;     // 미래 행동 계획
-    selfGoal: string;       // 느낀점 및 다짐
-    createDate: string;     // 작성일
-    updateDate: string;     // 수정일
+    private diary_seq: number;       // 고유 식별자
+    private user_id: string;         // 사용자 ID
+    private mood_level: number;      // 감정 강도
+    private mood_emoji: string;      // 감정 이모지
+    private event_info: string;      // 주요 사건
+    private event_with: string;      // 함께한 사람
+    private emotion_type: string;    // 주요 감정
+    private emotion_detail: string;  // 감정 이유
+    private behavior_style: string;  // 행동 기록
+    private behavior_effect: string; // 행동 영향
+    private behavior_reason: string; // 미표현 이유
+    private result_outcome: string;  // 사건 결과
+    private result_plan: string;     // 미래 행동 계획
+    private self_goal: string;       // 느낀점 및 다짐
+    private entry_date: string;      // 일기 작성일
+    private create_date: string;     // 생성일
+    private update_date: string;     // 수정일
 
     constructor() {
         makeAutoObservable(this);
     }
 
-    // ▶ 상태 업데이트 메서드
-    setDiarySeq(seq: number) {
-        this.diarySeq = seq;
+    // ▶ Getter
+    get diarySeq() {
+        return this.diary_seq;
     }
 
-    setUserId(userId: string) {
-        this.userId = userId;
+    get userId() {
+        return this.user_id;
     }
 
-    setMoodLevel(level: number) {
-        this.moodLevel = level;
+    get moodLevel() {
+        return this.mood_level;
     }
 
-    setMoodEmoji(emoji: string) {
-        this.moodEmoji = emoji;
+    get moodEmoji() {
+        return this.mood_emoji;
     }
 
-    setEventInfo(info: string) {
-        this.eventInfo = info;
+    get eventInfo() {
+        return this.event_info;
     }
 
-    setEventWith(person: string) {
-        this.eventWith = person;
+    get eventWith() {
+        return this.event_with;
     }
 
-    setEmotionType(type: string) {
-        this.emotionType = type;
+    get emotionType() {
+        return this.emotion_type;
     }
 
-    setEmotionDetail(detail: string) {
-        this.emotionDetail = detail;
+    get emotionDetail() {
+        return this.emotion_detail;
     }
 
-    setBehaviorStyle(style: string) {
-        this.behaviorStyle = style;
+    get behaviorStyle() {
+        return this.behavior_style;
     }
 
-    setBehaviorEffect(effect: string) {
-        this.behaviorEffect = effect;
+    get behaviorEffect() {
+        return this.behavior_effect;
     }
 
-    setBehaviorReason(reason: string) {
-        this.behaviorReason = reason;
+    get behaviorReason() {
+        return this.behavior_reason;
     }
 
-    setResultOutcome(outcome: string) {
-        this.resultOutcome = outcome;
+    get resultOutcome() {
+        return this.result_outcome;
     }
 
-    setResultPlan(plan: string) {
-        this.resultPlan = plan;
+    get resultPlan() {
+        return this.result_plan;
     }
 
-    setSelfGoal(goal: string) {
-        this.selfGoal = goal;
+    get selfGoal() {
+        return this.self_goal;
     }
 
-    setCreateDate(createDate: string) {
-        this.createDate = createDate;
+    get entryDate() {
+        return this.entry_date;
     }
 
-    setUpdateDate(updateDate: string) {
-        this.updateDate = updateDate;
+    get createDate() {
+        return this.create_date;
     }
 
-
-    // ▶ 상태 조회 메서드 (Getter)
-    getDiarySeq() {
-        return this.diarySeq;
-    }
-
-    getUserId() {
-        return this.userId;
-    }
-
-    getMoodLevel() {
-        return this.moodLevel;
-    }
-
-    getMoodEmoji() {
-        return this.moodEmoji;
-    }
-
-    getEventInfo() {
-        return this.eventInfo;
-    }
-
-    getEventWith() {
-        return this.eventWith;
-    }
-
-    getEmotionType() {
-        return this.emotionType;
-    }
-
-    getEmotionDetail() {
-        return this.emotionDetail;
-    }
-
-    getBehaviorStyle() {
-        return this.behaviorStyle;
-    }
-
-    getBehaviorEffect() {
-        return this.behaviorEffect;
-    }
-
-    getBehaviorReason() {
-        return this.behaviorReason;
-    }
-
-    getResultOutcome() {
-        return this.resultOutcome;
-    }
-
-    getResultPlan() {
-        return this.resultPlan;
-    }
-
-    getSelfGoal() {
-        return this.selfGoal;
-    }
-
-    getCreateDate() {
-        return this.createDate;
-    }
-
-    getUpdateDate() {
-        return this.updateDate;
+    get updateDate() {
+        return this.update_date;
     }
 
 
-    // ▶ 최종 저장 메서드
-    saveDiaryEntry() {
-        // 데이터베이스에 저장하는 로직 구현
-        // 예: API 호출하여 저장
+    // ▶ Setter
+    set diarySeq(seq: number) {
+        this.diary_seq = seq;
+    }
+
+    set userId(userId: string) {
+        this.user_id = userId;
+    }
+
+    set moodLevel(level: number) {
+        this.mood_level = level;
+    }
+
+    set moodEmoji(emoji: string) {
+        this.mood_emoji = emoji;
+    }
+
+    set eventInfo(info: string) {
+        this.event_info = info;
+    }
+
+    set eventWith(person: string) {
+        this.event_with = person;
+    }
+
+    set emotionType(type: string) {
+        this.emotion_type = type;
+    }
+
+    set emotionDetail(detail: string) {
+        this.emotion_detail = detail;
+    }
+
+    set behaviorStyle(style: string) {
+        this.behavior_style = style;
+    }
+
+    set behaviorEffect(effect: string) {
+        this.behavior_effect = effect;
+    }
+
+    set behaviorReason(reason: string) {
+        this.behavior_reason = reason;
+    }
+
+    set resultOutcome(outcome: string) {
+        this.result_outcome = outcome;
+    }
+
+    set resultPlan(plan: string) {
+        this.result_plan = plan;
+    }
+
+    set selfGoal(goal: string) {
+        this.self_goal = goal;
+    }
+
+    set entryDate(entryDate: string) {
+        this.entry_date = entryDate;
+    }
+
+    set createDate(createDate: string) {
+        this.create_date = createDate;
+    }
+
+    set updateDate(updateDate: string) {
+        this.update_date = updateDate;
+    }
+
+
+    // ▶ 데이터베이스 저장 메서드(API 호출하여 저장)
+    async saveDiaryEntry() {
+        const diaryData =  {
+            user_id: this.user_id,
+            mood_level: this.mood_level,
+            mood_emoji: this.mood_emoji,
+            event_info: this.event_info,
+            event_with: this.event_with,
+            emotion_type: this.emotion_type,
+            emotion_detail: this.emotion_detail,
+            behavior_style: this.behavior_style,
+            behavior_effect: this.behavior_effect,
+            behavior_reason: this.behavior_reason,
+            result_outcome: this.result_outcome,
+            result_plan: this.result_plan,
+            self_goal: this.self_goal,
+            entry_date: this.entry_date
+        };
+        try {
+            const response = await axios.post('/api/createDiary', diaryData);
+            console.log('일기 저장 성공 :', response.data);
+        } catch (error) {
+            console.error('일기 저장 실패 :', error);
+        }
     }
 }

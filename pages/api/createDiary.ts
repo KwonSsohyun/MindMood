@@ -4,3 +4,59 @@
  * 감정 일기 작성
  * - 사용자가 입력한 일기 데이터를 데이터베이스에 저장
  */
+import { NextApiRequest, NextApiResponse } from 'next';
+import prisma from '../../lib/prisma'; // API 라우트에서 Prisma 사용
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+
+    if (req.method === 'POST') {
+        try {
+            const {
+                user_id,
+                mood_level,
+                mood_emoji,
+                event_info,
+                event_with,
+                emotion_type,
+                emotion_detail,
+                behavior_style,
+                behavior_effect,
+                behavior_reason,
+                result_outcome,
+                result_plan,
+                self_goal,
+                entry_date
+            } = req.body; // 요청 본문에서 데이터 추출
+
+            // 일기 데이터 저장
+            const newDiary = await prisma.diary.create({
+                data: {
+                    user_id,
+                    mood_level,
+                    mood_emoji,
+                    event_info,
+                    event_with,
+                    emotion_type,
+                    emotion_detail,
+                    behavior_style,
+                    behavior_effect,
+                    behavior_reason,
+                    result_outcome,
+                    result_plan,
+                    self_goal,
+                    entry_date
+                }
+            });
+
+            return res.status(201).json(newDiary); // 성공적으로 저장된 일기 반환
+
+        } catch (error) {
+            console.error('일기 저장 에러:', error);
+            return res.status(500).json({ error: '일기 저장에 실패했습니다.' });
+        }
+    } else {
+        // 지원하지 않는 메서드 처리
+        res.setHeader('Allow', ['POST']);
+        return res.status(405).end(`Method ${req.method} Not Allowed`);
+    }
+}

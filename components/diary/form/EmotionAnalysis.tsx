@@ -10,11 +10,12 @@
  * - emotion_type            : 주요 감정 (VARCHAR)
  * - emotion_detail          : 감정 이유 (VARCHAR)
  */
-import React, { useState } from 'react';
-import { Flex, Box, Text, Textarea, Button } from '@chakra-ui/react';
+import React, { useState, useEffect } from 'react';
+import { Flex, Box, Text, Textarea } from '@chakra-ui/react';
+import ButtonStyle from '../../common/ButtonStyle';
 
 
-export default function EmotionAnalysis({ diaryStore, onNext }) {
+export default function EmotionAnalysis({ diaryStore, currentStep, onPrevious, onNext }) {
 
     // ● 주요 감정(emotion_type)
     const [emotionType, setEmotionType] = useState(null);
@@ -23,10 +24,16 @@ export default function EmotionAnalysis({ diaryStore, onNext }) {
 
     // ▶ MobX 스토어 저장 및 다음 단계 이동
     const handleNext = () => {
-        diaryStore.setEmotionType(emotionType);
-        diaryStore.setEmotionDetail(emotionDetail);
+        diaryStore.emotionType = emotionType;
+        diaryStore.emotionDetail = emotionDetail;
         onNext();
     };    
+
+    // ▶ 이전 버튼 클릭 시 상태 업데이트
+    useEffect(() => {
+        setEmotionType(diaryStore.emotionType);
+        setEmotionDetail(diaryStore.emotionDetail);
+    }, [diaryStore.emotionType, diaryStore.emotionDetail]);
 
     return <>
         <Flex direction="column" p={4} mb={3}>
@@ -69,27 +76,18 @@ export default function EmotionAnalysis({ diaryStore, onNext }) {
                     </Flex>
                 </Box>
             </Flex>
-            <Flex direction="column" p={4} mx={{ base: 0, md: 200 }}>
-                <Button 
-                    bg="#4C956C" 
-                    color="white"
-                    width="full"
-                    px={6}
-                    py={6}
-                    mt={4}
-                    onClick={handleNext}
-                    isDisabled={ !emotionType || !emotionDetail }
-                    _hover={{ bg: "#2C6E49" }}
-                    _active={{ bg: "#2C6E49" }}
-                >
-                    다음
-                </Button>
-            </Flex>
         </Flex>
 
-        <Text>1.오늘의 기분 점검 - 감정 강도 : {diaryStore.getMoodLevel()}</Text>
-        <Text>1.오늘의 기분 점검 - 감정 이모지 : {diaryStore.getMoodEmoji()}</Text><br/>
-        <Text>2.사건 기록 - 주요 사건 : {diaryStore.getEventInfo()}</Text>
-        <Text>2.사건 기록 - 함께한 사람 : {diaryStore.getEventWith()}</Text>
+        <ButtonStyle 
+            onPrevious={onPrevious} 
+            onNext={handleNext} 
+            currentStep={currentStep} 
+            isNextDisabled={ !emotionType || !emotionDetail }
+        />
+
+        <Text>1.오늘의 기분 점검 - 감정 강도 : {diaryStore.moodLevel}</Text>
+        <Text>1.오늘의 기분 점검 - 감정 이모지 : {diaryStore.moodEmoji}</Text><br/>
+        <Text>2.사건 기록 - 주요 사건 : {diaryStore.eventInfo}</Text>
+        <Text>2.사건 기록 - 함께한 사람 : {diaryStore.eventWith}</Text>
     </>
 }

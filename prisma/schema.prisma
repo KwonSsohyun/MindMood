@@ -47,8 +47,9 @@ model Diary {
   result_outcome  String?
   result_plan     String?
   self_goal       String?
+  entry_date      DateTime
   create_date     DateTime @default(now())
-  update_date     DateTime @updatedAt
+  update_date     DateTime? @updatedAt
 
   user            AuthUser @relation(fields: [user_id], references: [user_id]) // 관계 정의
 
