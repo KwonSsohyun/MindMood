@@ -1,10 +1,12 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useStore } from '../stores';
 
 const SessionContext = createContext();
 
 export const SessionProvider = ({ children }) => {
     const router = useRouter();
+    const { userStore } = useStore();
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -16,6 +18,7 @@ export const SessionProvider = ({ children }) => {
         if (response.ok) {
             const data = await response.json();
             setUser(data.user); // 사용자 정보를 상태에 저장
+
         } else {
             setUser(null); // 세션이 없으면 사용자 정보를 null로 설정
         }

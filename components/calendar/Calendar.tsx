@@ -7,12 +7,14 @@
  * - 각 날짜에 감정 이모지 표시(작성 안 한 날짜는 빈 칸)
  */
 import React from 'react';
+import { useStore } from '../../stores';
+
+import { IconButton, Box, Flex, Text, Button } from '@chakra-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import 'moment/locale/ko'; 
-import { IconButton, Box, Flex, Text, Button } from '@chakra-ui/react';
-import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import 'moment/locale/ko';
 import styles from '../../styles/calendar.module.css';
 
 // Moment.js의 로컬라이저를 한국어로 설정
@@ -55,19 +57,24 @@ function CustomToolbar({ label, onNavigate }) {
 
 
 export default function Calendar() {
-    const myEventsList = [
-        {
-          title: '😊',
-          start: new Date(),
-          end: new Date(),
-        },
-    ];
+
+    // ▶ MobX 스토어 인스턴스 가져오기
+    const { userStore } = useStore();
+    const diaries = userStore.diaries;
+    console.log("diaries : ", diaries);
+
+    // 일기 데이터를 Calendar 이벤트 형식으로 변환
+    const events = diaries.map(diary => ({
+        title: diary.mood_emoji, // 이모지 사용 (예: 😊)
+        start: new Date(diary.entry_date), // 일기 작성일을 시작일로 설정
+        end: new Date(diary.entry_date), // 일기 작성일을 종료일로 설정
+    }));
 
     return <>
         <Box p={5} boxShadow="md" borderRadius="lg">
         <BigCalendar
             localizer={localizer}
-            events={myEventsList}
+            events={events}
             startAccessor="start"
             endAccessor="end"
             style={{ height: 600 }}

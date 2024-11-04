@@ -9,22 +9,45 @@
  * - self_goal               : 느낀점 및 다짐 (VARCHAR)
  */
 import React, { useState, useEffect } from 'react';
-import { Flex, Box, Text, Textarea, Button } from '@chakra-ui/react';
+import { Flex, Box, Text, Textarea, Button, useToast } from '@chakra-ui/react';
 import ButtonStyle from '../../common/ButtonStyle';
+import { useRouter } from 'next/router';
 
 
 export default function SelfSuggestion({ diaryStore, currentStep, onPrevious, onNext }) {
 
     // ● 느낀점 및 다짐(self_goal)
     const [selfGoal, setSelfGoal] = useState(null);
+    const toast = useToast(); // Toast 훅
+    const router = useRouter(); // Router 훅
 
     // ▶ MobX 스토어 저장 및 다음 단계 이동
     const handleSave = async () => {
         diaryStore.selfGoal = selfGoal;
 
-        // 저장 메서드 호출
-        await diaryStore.saveDiaryEntry();
-    };     
+        // 저장 후 오류 메시지가 없을 경우 성공 알림 띄우기
+        try {
+            await diaryStore.saveDiaryEntry();
+            toast({
+                title: "일기 저장 완료",
+                description: "일기가 성공적으로 저장되었습니다.",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            });
+            router.push('/'); // 원하는 경로로 이동
+
+        } catch (error) {
+            // 오류 메시지 표시
+            toast({
+                title: "저장 실패",
+                description: error.message,
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            });
+        }
+    };
 
     const handleNext = () => {
         diaryStore.selfGoal = selfGoal;
@@ -84,6 +107,8 @@ export default function SelfSuggestion({ diaryStore, currentStep, onPrevious, on
             </Button>
         </Flex>
 
+        <Text>일기 작성일 : {diaryStore.entryDate}</Text>
+        <Text>사용자 ID : {diaryStore.userId}</Text>
         <Text>1.오늘의 기분 점검 - 감정 강도 : {diaryStore.moodLevel}</Text>
         <Text>1.오늘의 기분 점검 - 감정 이모지 : {diaryStore.moodEmoji}</Text><br/>
         <Text>2.사건 기록 - 주요 사건 : {diaryStore.eventInfo}</Text>
@@ -94,6 +119,7 @@ export default function SelfSuggestion({ diaryStore, currentStep, onPrevious, on
         <Text>4.행동/반응 분석 - 행동 영향 : {diaryStore.behaviorEffect}</Text>
         <Text>4.행동/반응 분석 - 미표현 이유 : {diaryStore.behaviorReason}</Text><br/>
         <Text>5.결과 평가 - 사건 결과 : {diaryStore.resultOutcome}</Text>
-        <Text>5.결과 평가 - 원하는 행동 : {diaryStore.resultPlan}</Text>
+        <Text>5.결과 평가 - 원하는 행동 : {diaryStore.resultPlan}</Text><br/>
+        <Text>6.자기 제안 - 느낀점과 다짐 : {diaryStore.selfGoal}</Text>
     </>
 }

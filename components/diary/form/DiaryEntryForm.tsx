@@ -13,6 +13,8 @@ import { Flex, Box, Text, IconButton, Button } from '@chakra-ui/react';
 import { CalendarIcon } from '@chakra-ui/icons';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { ko } from 'date-fns/locale'; 
+import 'moment/locale/ko';
 
 import MoodCheck from '../form/MoodCheck';
 import EventRecord from '../form/EventRecord';
@@ -55,12 +57,17 @@ const DiaryEntryForm = observer(() => {
 
     // ▶ 다음 단계로 이동
     const handleNextStep = () => {
-        // 날짜가 선택되지 않았다면 현재 날짜를 MobX 스토어에 저장
+        console.log('isDatePickerOpen:', isDatePickerOpen);
+        console.log('현재 날짜:', new Date().toISOString());
+        console.log('선택된 날짜:', startDate.toISOString());
+
         if (!isDatePickerOpen) {
-            diaryStore.entryDate = new Date().toISOString(); // 현재 날짜 'YYYY-MM-DD'
-        } else {
             diaryStore.entryDate = startDate.toISOString(); // 선택된 날짜 저장
+        } else {
+            diaryStore.entryDate = new Date().toISOString(); // 현재 날짜 저장
         }
+        console.log('저장된 날짜:', diaryStore.entryDate);
+
         setCurrentStep((prev) => Math.min(prev + 1, steps.length)); // 단계가 6을 초과하지 않도록 설정
         diaryStore.userId = user.user_id;
     };
@@ -73,13 +80,15 @@ const DiaryEntryForm = observer(() => {
     // ▶ 일기 작성일
     const handleDateChange = (date) => {
         setStartDate(date);
+        console.log("날짜저장 date : ", date);
         diaryStore.entryDate = date.toISOString(); // 'YYYY-MM-DD' 형식으로 저장
+        console.log("날짜저장 diaryStore.entryDate : ", diaryStore.entryDate);
         setIsDatePickerOpen(false);
     };
 
 
     return <>
-        {/* 단계 표시 바 */}
+        {/* ▶ 단계 표시 바 */}
         <Flex direction="column" mb={10} alignItems="center">
             <Flex width="100%" alignItems="center">
                 {steps.map((step, index) => (
@@ -121,13 +130,14 @@ const DiaryEntryForm = observer(() => {
                 ))}
             </Flex>
         </Flex>
+        {/* ▶ 사용자ID & 일기작성일 */}
         {currentStep === 1 &&
             <Flex flexDirection="column" mb={6}>
                 <Flex direction="column" p={4}>
                     <Text fontSize="ml" fontWeight="bold" color="gray.500">{user.user_id}님 오늘의 감정은 어때요?</Text>
                     <Flex alignItems="center" alignContent="center">
                         <Text fontSize="2xl" fontWeight="bold" color="#2C6E49" mr={1}>
-                            {startDate.toLocaleDateString('ko-KR')} {/* 원하는 날짜 형식으로 표시 */}
+                            {startDate.toLocaleDateString('ko-KR')}
                         </Text>
                         <IconButton
                             icon={<CalendarIcon />}
@@ -146,7 +156,9 @@ const DiaryEntryForm = observer(() => {
                                 selected={startDate} // selected 속성에 Date 객체를 전달
                                 onChange={handleDateChange} // onChange 핸들러 설정
                                 dateFormat="yyyy/MM/dd" // 날짜 형식 설정
+                                locale={ko}
                                 inline // 인라인으로 표시
+                                maxDate={new Date()} // 현재 날짜 이전 선택 불가
                             />
                         </Flex>
                     )}

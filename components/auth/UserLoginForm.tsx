@@ -8,6 +8,7 @@ import React, { useState } from 'react';
 import { Box, Button, Flex, Text, Input, FormControl, FormLabel, useToast, Link } from '@chakra-ui/react';
 import { useRouter } from 'next/router'; 
 import { useSession } from '../../context/SessionContext'; // 세션 훅 가져오기
+import { useStore } from '../../stores';
 
 
 export default function UserLoginForm() {
@@ -17,6 +18,7 @@ export default function UserLoginForm() {
     const toast = useToast();
     const router = useRouter();
     const { setUser } = useSession(); // 세션 훅 사용
+    const { userStore } = useStore();
 
     // DB 로그인 처리
     const handleSubmit = async (e) => {
@@ -41,6 +43,10 @@ export default function UserLoginForm() {
                 const data = await response.json();
                 console.log("data : ", data);
                 setUser(data.user);
+
+                // 로그인 성공 후 사용자 일기 데이터 Fetching
+                await userStore.fetchUserData(data.user.user_id);
+
                 toast({
                     title: "로그인 성공",
                     description: "로그인에 성공했습니다.",

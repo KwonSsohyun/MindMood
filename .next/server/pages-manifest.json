@@ -1,10 +1,14 @@
 {
   "/_app": "pages/_app.js",
-  "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/": "pages/index.js",
+  "/_error": "pages/_error.js",
   "/diary/ListDiary": "pages/diary/ListDiary.js",
+  "/diary/[id]": "pages/diary/[id].js",
   "/login": "pages/login.js",
-  "/api/createDiary": "pages/api/createDiary.js",
-  "/diary/NewDiary": "pages/diary/NewDiary.js"
+  "/": "pages/index.js",
+  "/api/session": "pages/api/session.js",
+  "/api/getDiaries": "pages/api/getDiaries.js",
+  "/diary/NewDiary": "pages/diary/NewDiary.js",
+  "/chart": "pages/chart.js",
+  "/api/loginUser": "pages/api/loginUser.js"
 }

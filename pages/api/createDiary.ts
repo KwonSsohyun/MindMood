@@ -28,6 +28,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 entry_date
             } = req.body; // 요청 본문에서 데이터 추출
 
+            // 같은 날 이미 저장된 일기 확인
+            const entryDateOnly = entry_date.split('T')[0];
+            console.log('entryDateOnly : ', entryDateOnly);
+            
+            const existingDiary = await prisma.diary.findFirst({
+                where: {
+                    user_id,
+                    // entry_date에서 시간 제거하고 비교
+                    entry_date: {
+                        gte: new Date(entryDateOnly), // 시작일
+                        lt: new Date(new Date(entryDateOnly).setDate(new Date(entryDateOnly).getDate() + 1)) // 종료일
+                    }
+                }
+            });
+            console.log('existingDiary : ', existingDiary);
+            // 이미 같은 날 일기가 존재하면 에러 응답
+            if (existingDiary) {
+                return res.status(400).json({ error: '이미 같은 날에 저장된 일기가 있습니다.' });
+            }
+
             // 일기 데이터 저장
             const newDiary = await prisma.diary.create({
                 data: {
@@ -52,7 +72,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         } catch (error) {
             console.error('일기 저장 에러:', error);
-            return res.status(500).json({ error: '일기 저장에 실패했습니다.' });
+            return res.status(500).json({ error: '이미 같은 날에 저장된 일기가 있습니다.' });
         }
     } else {
         // 지원하지 않는 메서드 처리

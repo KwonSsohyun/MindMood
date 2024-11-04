@@ -7,8 +7,9 @@
  * - MobX의 관찰 가능 상태로 UI 자동 업데이트
  * - 리액트 컴포넌트와 실시간 연동
  */
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, reaction } from 'mobx';
 import axios from 'axios';
+import { UserStore } from './UserStore';
 
 export class DiaryStore {
     // ▶ 일기 필드
@@ -30,9 +31,29 @@ export class DiaryStore {
     private create_date: string;     // 생성일
     private update_date: string;     // 수정일
 
-    constructor() {
+    constructor(private userStore: UserStore) {
         makeAutoObservable(this);
-    }
+
+        // entry_date가 변경될 때마다 UserStore의 데이터를 새로 가져오기
+        reaction(
+            () => this.entry_date, // 관찰할 상태
+            async (newEntryDate) => {
+                if (this.user_id) { // user_id가 설정되어 있을 경우에만 호출
+                    await this.userStore.fetchUserData(this.user_id);
+                }
+            }
+        );
+
+        // update_date가 변경될 때마다 UserStore의 데이터를 새로 가져오기
+        reaction(
+            () => this.update_date, // 관찰할 상태
+            async (newUpdateDate) => {
+                if (this.user_id) { // user_id가 설정되어 있을 경우에만 호출
+                    await this.userStore.fetchUserData(this.user_id);
+                }
+            }
+        );
+}
 
     // ▶ Getter
     get diarySeq() {
@@ -173,6 +194,28 @@ export class DiaryStore {
         this.update_date = updateDate;
     }
 
+    // ▶ 스토어 리셋 메서드
+    resetStore = () => {
+        Object.assign(this, {
+            diary_seq: null,
+            user_id: '',
+            mood_level: null,
+            mood_emoji: '',
+            event_info: '',
+            event_with: '',
+            emotion_type: '',
+            emotion_detail: '',
+            behavior_style: '',
+            behavior_effect: '',
+            behavior_reason: '',
+            result_outcome: '',
+            result_plan: '',
+            self_goal: '',
+            entry_date: '',
+            create_date: '',
+            update_date: ''
+        });
+    };    
 
     // ▶ 데이터베이스 저장 메서드(API 호출하여 저장)
     async saveDiaryEntry() {
@@ -195,8 +238,27 @@ export class DiaryStore {
         try {
             const response = await axios.post('/api/createDiary', diaryData);
             console.log('일기 저장 성공 :', response.data);
+
+            // UserStore의 fetchUserData 호출하여 최신값으로 업데이트
+            try {
+                await this.userStore.fetchUserData(this.user_id);
+            } catch (error) {
+                console.error('사용자 데이터 업데이트 실패:', error.message);
+                throw new Error('사용자 데이터를 업데이트하는 중 오류가 발생했습니다.');
+            }        
+
+            this.resetStore(); // 저장 후 필드 초기화
+
         } catch (error) {
-            console.error('일기 저장 실패 :', error);
+            if (error.response) {
+                // 서버가 응답했으나 상태 코드가 2xx가 아닌 경우
+                console.error('일기 저장 실패 :', error.response.data.error);
+                throw new Error(error.response.data.error); // 사용자에게 보여줄 에러 메시지
+            } else {
+                // 네트워크 오류 등
+                console.error('일기 저장 실패 :', error.message);
+                throw new Error('일기 저장 중 오류가 발생했습니다.'); // 사용자에게 보여줄 일반 오류 메시지
+            }
         }
     }
 }

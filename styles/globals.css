@@ -34,6 +34,7 @@ div.rbc-event{
 
 .rbc-event-content{
     text-align: center !important;
+    font-size: xx-large;
 }
 
 .rbc-off-range-bg{
@@ -51,15 +52,64 @@ div.rbc-event{
     box-shadow: none !important;
 }
 
+.rbc-button-link{
+    font-weight: 600;
+    font-size: smaller;
+}
+
+.rbc-date-cell {
+    text-align: center !important;
+    margin-top: 5px;
+}
+
+.rbc-event, .rbc-day-slot .rbc-background-event{
+    padding: 0px !important;
+}
+
+/* calendar.module.css */
+.rbc-month-view {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.rbc-month-view .rbc-row {
+    display: flex !important;
+}
+
+.rbc-month-view .rbc-day-slot {
+    flex: 1 !important;
+}
+
+.rbc-month-view .rbc-event {
+    width: 100% !important;
+}
+
+/* 정사각형 유지 */
+.rbc-day-slot {
+    position: relative !important;
+    height: 0 !important;
+    padding-bottom: 100% !important;
+}
+
 
 /* ▶ 서브 : 일기 컴포넌트 */
 .react-datepicker {
+    font-family: 'EarlyFontDiary', sans-serif !important; /* 전체 폰트 변경 */
     border: 2px solid #e2e8f0 !important;
     border-top-left-radius: 0.5rem !important;
     border-top-right-radius: 0.5rem !important;
 }
 .react-datepicker__header {
     background-color: #D6E7DB !important;
+    font-weight: 600;
+}
+
+.react-datepicker__day--selected {
+    font-weight: 600 !important;
+}
+
+.custom-datepicker .react-datepicker__day {
+    font-weight: 600;
 }
 
 .react-datepicker__month-container{
@@ -70,6 +120,10 @@ div.rbc-event{
     border-radius: 10px !important;
     padding: 10px !important;
     background-color: #fff !important;
+}
+
+.react-datepicker__day--today{
+    color: #D68C45 !important;
 }
 
 .react-calendar {
