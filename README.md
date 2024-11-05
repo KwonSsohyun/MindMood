@@ -79,9 +79,9 @@ npx prisma migrate deploy
 <br/>
 
 ### 테이블 구조
-- **`auth_user`** : 사용자 정보
-- **`diary`** : 사용자 일기 기록
-- **`select_category`** : 선택 가능한 카테고리 목록
+- **`AuthUser`** : 사용자 정보
+- **`Diary`** : 사용자 일기 데이터
+- **`SelectCategory`** : 선택 가능한 카테고리 목록
 
 ### API
 `pages/api` 폴더 내에 데이터베이스와 상호작용하는 API 엔드포인트 구현
@@ -166,10 +166,12 @@ npm start             # 서버 실행
 📁 MindMood
 │
 ├── 🧩 components
-│   ├── 📁 layout                               # 공통 사용 컴포넌트
+│   ├── 📁 layout                               # 레이아웃 컴포넌트
 │   │   ├── Header.tsx			        # 헤더
 │   │   ├── Footer.tsx				# 푸터
 │   │   └── Sidebar.tsx			        # 사이드바
+│   ├── 📁 common                              # 공통 사용 컴포넌트
+│   │   └── ButtonStyle.tsx		        # 버튼 스타일
 │   ├── 📁 auth                                # 사용자 인증 컴포넌트
 │   │   ├── UserSignupForm.tsx		        # 회원가입
 │   │   └── UserLoginForm.tsx			# 로그인
@@ -177,6 +179,7 @@ npm start             # 서버 실행
 │   │   └── Calendar.tsx			# [메인] 감정 달력 컴포넌트
 │   ├── 📁 diary				# [서브 2,3,4] 감정일기 관련 컴포넌트 (작성, 목록, 상세, 수정, 삭제)
 │   │   ├── 📁 form				# [서브 2-1] 일기 작성
+│   │   │   ├── DiaryEntryForm.tsx		# [서브 2-1] 일기 상위 컴포넌트
 │   │   │   ├── MoodCheck.tsx		        # [서브 2-1] 1) 오늘의 기분 점검
 │   │   │   ├── EventRecord.tsx		        # [서브 2-1] 2) 사건 기록
 │   │   │   ├── EmotionAnalysis.tsx	        # [서브 2-1] 3) 감정 탐구
@@ -188,20 +191,21 @@ npm start             # 서버 실행
 │   │   │   ├── DiaryDetail.tsx                 # [서브 4-1] 일기 상세(수정, 삭제)
 │   │   │   └── DiaryEdit.tsx		        # [서브 4-2] 일기 수정
 │   └── 📁 chart				# [서브 5] 월간 감정 차트
+│        ├── DiaryEntryChart.tsx                # [서브 5-1] 차트 상위 컴포넌트
 │        ├── PieChart.tsx			# [서브 5-1] 원 그래프
-│        └── LineChart.tsx			# [서브 5-2] 선 그래프
-│
-├── 🗃️ stores                            	# 공통 상태 관리 폴더
-│   └── diaryStore.tsx                 		# 일기 상태 관리
+│        └── LineChart.tsx			# [서브 5-1] 선 그래프
 │
 ├── 🔗 pages
 │   ├── 📁 api                                 # 데이터베이스 API
+│   │   ├── session.ts			        # 사용자 세션 관리
 │   │   ├── createUser.ts			# 사용자 데이터 생성
 │   │   ├── loginUser.ts			# 사용자 로그인
 │   │   ├── getDiaries.ts			# 전체 일기 데이터 조회
 │   │   ├── createDiary.ts			# 일기 데이터 저장
-│   │   ├── updateDiary.ts			# 특정 일기 데이터 수정
-│   │   └── deleteDiary.ts			# 특정 일기 데이터 삭제
+│   │   ├── 📁 updateDiary		        # 특정 ID 일기 데이터 수정
+│   │   │   └── [id].ts		               
+│   │   └── 📁 deleteDiary			# 특정 ID 일기 데이터 삭제
+│   │       └── [id].ts		                
 │   ├── _app.tsx                        	# 공통 컴포넌트 정의
 │   ├── index.tsx                        	# 메인 페이지(감정 달력)
 │   ├── signup.tsx                        	# 회원가입 페이지
@@ -210,20 +214,37 @@ npm start             # 서버 실행
 │   │   ├── NewDiary.tsx			# 일기 작성 페이지
 │   │   ├── ListDiary.tsx			# 일기 목록 페이지
 │   │   └── [id].tsx				# 일기 상세 페이지(수정, 삭제)
-│   └── chart.tsx			        # 감정 차트 페이지
+│   ├── chart.tsx			        # 감정 차트 페이지
+│   └── 404.tsx			                # 에러 페이지
+│
+├── 🖼️ public
+│   └── icon.ico                      	        # 파비콘 파일
 │
 ├── 🎨 styles
-│   ├── globals.css                      	# 글로벌 스타일 CSS 파일
-│   ├── calendar.module.css                     # 감정 달력 스타일
-│   ├── diary.module.css                        # 일기 스타일
-│   └── chart.module.css                        # 차트 스타일
+│   └── globals.css                      	# 글로벌 스타일 CSS 파일
+│
+├── 💾 prisma
+│   └── schema.prisma                           # Prisma 데이터베이스 스키마 정의
+│
+├── 🔧 lib
+│   ├── prisma.ts                               # Prisma 클라이언트 설정
+│   └── session.js                              # Express 세션 미들웨어 설정
+│
+├── 🗃️ context                            	# 공통 세션 관리 폴더
+│   └── SessionContext.js                       # 사용자 세션 상태 관리
+│
+├── 🗃️ stores                            	# MobX 스토어 폴더
+│   ├── index.tsx                        	# 스토어 모음 및 내보내기
+│   ├── UserStore.tsx                           # 사용자 상태 관리 스토어
+│   └── DiaryStore.tsx                          # 일기 상태 관리 스토어
 │
 ├── 📜 types
-│   └── diary.ts                         	# 일기 데이터 타입 정의
+│   ├── user.ts                         	# 사용자 데이터 타입 정의
+│   ├── diary.ts                         	# 일기 데이터 타입 정의
+│   ├── next-session.d.ts                       # Next.js API 요청 세션 타입 정의
+│   └── next-auth.d.ts                          # NextAuth.js 세션 타입 확장 정의
 │
-├── 🛠️ utils
-│   └── dateUtils.ts                     	# 날짜 처리 유틸 함수
-│
+├── ⚙️ .env                    	                # 환경 변수 설정 파일
 ├── ⚙️ next.config.js                    	# Next.js 설정 파일
 ├── ⚙️ next-env.d.ts                    	# Next.js 설정 파일
 ├── ⚙️ package.json                      	# 프로젝트 의존성 설정
