@@ -30,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
             // 같은 날 이미 저장된 일기 확인
             const entryDateOnly = entry_date.split('T')[0];
-            console.log('entryDateOnly : ', entryDateOnly);
+            // console.log('entryDateOnly : ', entryDateOnly);
             
             const existingDiary = await prisma.diary.findFirst({
                 where: {
@@ -42,7 +42,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     }
                 }
             });
-            console.log('existingDiary : ', existingDiary);
+            // console.log('existingDiary : ', existingDiary);
             // 이미 같은 날 일기가 존재하면 에러 응답
             if (existingDiary) {
                 return res.status(400).json({ error: '이미 같은 날에 저장된 일기가 있습니다.' });

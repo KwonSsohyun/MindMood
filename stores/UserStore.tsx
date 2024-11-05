@@ -36,7 +36,7 @@ export class UserStore {
     // ▶ 데이터베이스 호출 메서드
     async fetchUserData(userId: string) {
         const response = await axios.get(`/api/getDiaries?userId=${userId}`);
-        console.log("응답 데이터:", response.data);
+        // console.log("응답 데이터:", response.data);
         this.user_diaries = response.data;
 
     } catch (error) {

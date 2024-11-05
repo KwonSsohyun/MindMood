@@ -18,9 +18,11 @@ export const SessionProvider = ({ children }) => {
         if (response.ok) {
             const data = await response.json();
             setUser(data.user); // 사용자 정보를 상태에 저장
+            userStore.userId = data.user;
 
         } else {
             setUser(null); // 세션이 없으면 사용자 정보를 null로 설정
+            userStore.userId = null;
         }
         setLoading(false); // 데이터 로드 완료
     };

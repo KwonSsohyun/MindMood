@@ -84,20 +84,5 @@ export default function EmotionAnalysis({ diaryStore, currentStep, onPrevious, o
             currentStep={currentStep} 
             isNextDisabled={ !emotionType || !emotionDetail }
         />
-
-        <Text>일기 작성일 : {diaryStore.entryDate}</Text>
-        <Text>사용자 ID : {diaryStore.userId}</Text>
-        <Text>1.오늘의 기분 점검 - 감정 강도 : {diaryStore.moodLevel}</Text>
-        <Text>1.오늘의 기분 점검 - 감정 이모지 : {diaryStore.moodEmoji}</Text><br/>
-        <Text>2.사건 기록 - 주요 사건 : {diaryStore.eventInfo}</Text>
-        <Text>2.사건 기록 - 함께한 사람 : {diaryStore.eventWith}</Text><br/>
-        <Text>3.감정 탐구 - 주요 감정 : {diaryStore.emotionType}</Text>
-        <Text>3.감정 탐구 - 감정 이유 : {diaryStore.emotionDetail}</Text><br/>
-        <Text>4.행동/반응 분석 - 행동 기록 : {diaryStore.behaviorStyle}</Text>
-        <Text>4.행동/반응 분석 - 행동 영향 : {diaryStore.behaviorEffect}</Text>
-        <Text>4.행동/반응 분석 - 미표현 이유 : {diaryStore.behaviorReason}</Text><br/>
-        <Text>5.결과 평가 - 사건 결과 : {diaryStore.resultOutcome}</Text>
-        <Text>5.결과 평가 - 원하는 행동 : {diaryStore.resultPlan}</Text><br/>
-        <Text>6.자기 제안 - 느낀점과 다짐 : {diaryStore.selfGoal}</Text>
     </>
 }

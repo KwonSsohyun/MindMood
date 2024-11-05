@@ -5,11 +5,23 @@
  * - 일기 항목 세부 정보 표시
  * - 취소 및 수정완료 버튼
  */
-import React, { useState } from 'react';
+import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import { Flex, Box, Text, Input, Button, Textarea, Slider, SliderTrack, SliderFilledTrack, SliderThumb } from '@chakra-ui/react';
+import { Diary } from '../../../types/diary';
+import { useStore } from '../../../stores';
 
+interface DiaryEditProps {
+    diary: Diary;
+}
 
-export default function DiaryEdit({ diary }) {
+export interface DiaryEditRef {
+    onSave: () => void;
+}
+
+const DiaryEdit = forwardRef<DiaryEditRef, DiaryEditProps>(({ diary }, ref) => {
+
+    // ▶ MobX 스토어 인스턴스 가져오기
+    const { diaryStore } = useStore();
 
     // ● 선택된 감정 상태(mood_emoji)
     const [moodEmoji, setMoodEmoji] = useState(diary.mood_emoji);
@@ -62,6 +74,47 @@ export default function DiaryEdit({ diary }) {
         setEventIsEditing(false); // 입력 필드 숨기기
     };
 
+
+    // ▶ 부모 컴포넌트(DiaryDetail) 저장 버튼 클릭 시
+    useImperativeHandle(ref, () => ({
+        onSave() {
+            // MobX 스토어에 데이터 저장
+            // console.log("▶ 부모 컴포넌트(DiaryDetail) 저장 버튼 클릭 시");
+
+            diaryStore.diarySeq = diary.diary_seq;
+            diaryStore.userId = diary.user_id;
+
+            diaryStore.moodLevel = moodLevel;
+            diaryStore.moodEmoji = moodEmoji;
+            diaryStore.eventInfo = eventInfo;
+            diaryStore.eventWith = eventWith;
+            diaryStore.emotionType = emotionType;
+            diaryStore.emotionDetail = emotionDetail;
+            diaryStore.behaviorStyle = behaviorStyle;
+            diaryStore.behaviorEffect = behaviorEffect;
+            diaryStore.behaviorReason = behaviorReason;
+            diaryStore.resultOutcome = resultOutcome;
+            diaryStore.resultPlan = resultPlan;
+            diaryStore.selfGoal = selfGoal;
+
+            // console.log("--------수정값--------");
+            // console.log("고유 식별자(diary_seq) : ", diaryStore.diarySeq);
+            // console.log("사용자 ID(user_id) : ", diaryStore.userId);
+            // console.log("감정 상태(mood_emoji) : ", diaryStore.moodEmoji);
+            // console.log("감정 강도 상태(mood_level) : ", diaryStore.moodLevel);
+            // console.log("주요 사건(event_info) : ", diaryStore.eventInfo);
+            // console.log("함께한 사람(event_with) : ", diaryStore.eventWith);
+            // console.log("주요 감정(emotion_type) : ", diaryStore.emotionType);
+            // console.log("감정 이유(emotion_detail) : ", diaryStore.emotionDetail);
+            // console.log("행동 기록(behavior_style) : ", diaryStore.behaviorStyle);
+            // console.log("행동 영향(behavior_effect) : ", diaryStore.behaviorEffect);
+            // console.log("미표현 이유(behavior_reason) : ", diaryStore.behaviorReason);
+            // console.log("사건 결과(result_outcome) : ", diaryStore.resultOutcome);
+            // console.log("미래 행동 계획(result_plan) : ", diaryStore.resultPlan);
+            // console.log("느낀점 및 다짐(self_goal) : ", diaryStore.selfGoal);
+            // console.log("--------수정값--------");
+        },
+    }));
 
     return <>
         <Flex direction="column" p={4} mb={3}>
@@ -391,4 +444,6 @@ export default function DiaryEdit({ diary }) {
             </Flex>
         </Flex>
     </>
-}
+});
+
+export default DiaryEdit;

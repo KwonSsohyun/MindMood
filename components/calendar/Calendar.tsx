@@ -61,7 +61,7 @@ export default function Calendar() {
     // ▶ MobX 스토어 인스턴스 가져오기
     const { userStore } = useStore();
     const diaries = userStore.diaries;
-    console.log("diaries : ", diaries);
+    // console.log("diaries : ", diaries);
 
     // 일기 데이터를 Calendar 이벤트 형식으로 변환
     const events = diaries.map(diary => ({

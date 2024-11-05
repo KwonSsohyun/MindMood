@@ -5,20 +5,28 @@
  * - 일기 항목 세부 정보 표시
  * - 수정 및 삭제 버튼
  */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
-import { Flex, IconButton, HStack, Box, Text, Center, Spinner, Button } from '@chakra-ui/react';
+import { Flex, IconButton, HStack, Box, Text, Center, Spinner } from '@chakra-ui/react';
+import { Button, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter } from '@chakra-ui/react';
 import { FaArrowLeft, FaRegEdit, FaRegTrashAlt, FaSave } from 'react-icons/fa';
 import { useStore } from '../../../stores';
-import DiaryEdit from './DiaryEdit';
+import DiaryEdit, { DiaryEditRef } from './DiaryEdit';
 
 
 export default function DiaryDetail() {
+
+    const diaryEditRef = useRef<DiaryEditRef>(null);
+    const cancelRef = useRef();
+    const [isDialogOpen, setIsDialogOpen] = useState(false); // 수정 팝업 상태
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false); // 삭제 팝업 상태
+
     const router = useRouter();
     const { id } = router.query; // URL에서 ID 추출
-    const { userStore } = useStore();
+    const { userStore, diaryStore } = useStore();
     const [diary, setDiary] = useState(null);
     const [isEditing, setIsEditing] = useState(false); // 수정 모드 상태
+    
 
     useEffect(() => {
         if (id) {
@@ -31,16 +39,42 @@ export default function DiaryDetail() {
         }
     }, [id, userStore.diaries]);
 
-    const handleDelete = () => {
-        // 삭제 로직 구현
-        console.log(`Delete diary with ID: ${id}`);
-    };
 
-    const handleSave = () => {
-        // 저장 로직 구현
-        console.log(`Save diary with ID: ${id}`);
+    // ▶ 일기 데이터 수정
+    const handleSave = async () => {
+        setIsDialogOpen(false); // 팝업 닫기
+
+        // 자식 컴포넌트의 onSave 호출
+        if (diaryEditRef.current) {
+            diaryEditRef.current.onSave(); 
+        }
+
+        try {
+            // MobX 스토어 updateDiaryEntry 호출
+            await diaryStore.updateDiaryEntry();
+            // console.log('Diary updated successfully');
+            
+        } catch (error) {
+            console.error('Failed to update diary:', error);
+        }        
+
         setIsEditing(false); // 수정 모드 종료
     };
+
+
+    // ▶ 일기 데이터 삭제
+    const handleDelete = async () => {
+        try {
+            // MobX 스토어 deleteDiaryEntry 호출
+            await diaryStore.deleteDiaryEntry(id);
+            // console.log(`Diary with ID: ${id} deleted successfully`);
+            router.push('/diary/ListDiary'); // 목록 페이지로 이동
+
+        } catch (error) {
+            console.error('Failed to delete diary:', error);
+        }        
+    };
+
 
     if (!diary) {
         return <>
@@ -67,7 +101,7 @@ export default function DiaryDetail() {
                     {isEditing ? (
                         <IconButton
                             icon={<FaSave />}
-                            onClick={handleSave} // 저장
+                            onClick={() => setIsDialogOpen(true)} // 저장
                             aria-label="저장"
                         />
                     ) : (
@@ -79,16 +113,88 @@ export default function DiaryDetail() {
                     )}
                     <IconButton
                         icon={<FaRegTrashAlt />}
-                        onClick={handleDelete} // 삭제
+                        onClick={() => setIsDeleteDialogOpen(true)} // 삭제
                         aria-label="삭제"
                         colorScheme="red"
                     />
                 </HStack>
             </Flex>
 
+            {/* 삭제 확인 팝업 */}
+            <AlertDialog
+                isOpen={isDeleteDialogOpen}
+                leastDestructiveRef={cancelRef}
+                onClose={() => setIsDeleteDialogOpen(false)}
+            >
+                <AlertDialogOverlay
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                >
+                    <AlertDialogContent
+                        margin="0 auto" // 수평 중앙 정렬
+                        top="40%" // 수직 중앙을 위해 50% 이동
+                        transform="translateY(-50%)" // 정확한 수직 중앙 배치
+                        position="relative" // 위치 조정
+                    >
+                        <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                            일기 삭제
+                        </AlertDialogHeader>
+                        <AlertDialogBody color="gray.600">
+                            삭제한 일기는 복구할 수 없습니다.
+                        </AlertDialogBody>
+                        <AlertDialogFooter>
+                            <Button ref={cancelRef} onClick={() => setIsDeleteDialogOpen(false)}>
+                                아니오
+                            </Button>
+                            <Button colorScheme="red" onClick={handleDelete} ml={3}>
+                                삭제
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
+            </AlertDialog>
+
+
+            {/* 수정 안내 팝업 */}
+            <AlertDialog
+                isOpen={isDialogOpen}
+                leastDestructiveRef={cancelRef}
+                onClose={() => setIsDialogOpen(false)}
+            >
+                <AlertDialogOverlay
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                >
+                    <AlertDialogContent
+                        margin="0 auto" // 수평 중앙 정렬
+                        top="40%" // 수직 중앙을 위해 50% 이동
+                        transform="translateY(-50%)" // 정확한 수직 중앙 배치
+                        position="relative" // 위치 조정
+                    >
+                        <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                            일기 수정
+                        </AlertDialogHeader>
+                        <AlertDialogBody color="gray.600">
+                            일기를 수정하시겠습니까?
+                        </AlertDialogBody>
+                        <AlertDialogFooter>
+                            <Button ref={cancelRef} onClick={() => setIsDialogOpen(false)}>
+                                아니오
+                            </Button>
+                            <Button colorScheme="green" onClick={handleSave} ml={3}>
+                                수정하기
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
+            </AlertDialog>
+
+
             {/* 수정 모드일 경우 DiaryEdit 컴포넌트를 렌더링 */}
             {isEditing ? (
-                <DiaryEdit diary={diary} />
+                <DiaryEdit diary={diary} ref={diaryEditRef} />
             ) : (
                 <Box>
                     <Flex direction="column" p={4} mb={3}>

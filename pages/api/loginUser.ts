@@ -13,7 +13,7 @@ const handler = async (req, res) => {
     if (req.method === 'POST') {
         const { user_id, password } = req.body;
 
-        console.log('로그인 시도 - 사용자 ID:', user_id);
+        // console.log('로그인 시도 - 사용자 ID:', user_id);
 
         try {
             // 사용자 조회
@@ -27,15 +27,15 @@ const handler = async (req, res) => {
                 return res.status(401).json({ message: '아이디 또는 비밀번호가 잘못되었습니다.' });
             }
 
-            console.log('사용자 조회 성공 : ', user);
+            // console.log('사용자 조회 성공 : ', user);
             const isPasswordValid = await bcrypt.compare(password, user.password);
-            console.log('비밀번호 검증 결과 : ', isPasswordValid);
+            // console.log('비밀번호 검증 결과 : ', isPasswordValid);
 
             if (isPasswordValid) {
                 // 세션에 사용자 정보 저장
                 req.session.user = { id: user.user_seq, user_id: user.user_id };
                 await req.session.save(); // 세션 저장
-                console.log('로그인 성공 : ', req.session.user);
+                // console.log('로그인 성공 : ', req.session.user);
 
                 // 클라이언트에 응답을 보내기 전에 GET 요청을 통해 세션 정보를 추가
                 const sessionResponse = await fetch(`${req.headers.origin}/api/session?user_seq=${user.user_seq}&user_id=${user.user_id}`, {
@@ -45,7 +45,7 @@ const handler = async (req, res) => {
 
                 if (sessionResponse.ok) {
                     const sessionData = await sessionResponse.json();
-                    console.log('POST GET 세션 데이터:', sessionData.user );
+                    // console.log('POST GET 세션 데이터:', sessionData.user );
                     return res.status(200).json({ message: 'POST GET 로그인 성공', user: sessionData.user });
                 } else {
                     console.error('세션 확인 요청 실패:', sessionResponse.statusText);

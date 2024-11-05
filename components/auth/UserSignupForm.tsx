@@ -58,7 +58,7 @@ export default function UserSignupForm() {
             });
 
             if (response.ok) {
-                console.log('사용자 생성 성공');
+                // console.log('사용자 생성 성공');
                 const data = await response.json();
                 // setUser(data); // 회원가입 후 사용자 정보를 세션에 설정
                 toast({

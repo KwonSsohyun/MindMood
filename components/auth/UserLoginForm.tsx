@@ -41,7 +41,7 @@ export default function UserLoginForm() {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log("data : ", data);
+                // console.log("data : ", data);
                 setUser(data.user);
 
                 // 로그인 성공 후 사용자 일기 데이터 Fetching

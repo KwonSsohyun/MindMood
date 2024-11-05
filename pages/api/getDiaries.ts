@@ -14,9 +14,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         try {
             const diaries = await prisma.diary.findMany({
-                where: { user_id: userId }
+                where: { user_id: userId },
+                orderBy: { entry_date: 'desc' } // 내림차순 정렬
             });
-            console.log("사용자 일기 전체 데이터 : ", diaries);
+            // console.log("사용자 일기 전체 데이터 : ", diaries);
             return res.status(200).json(diaries);
 
         } catch (error) {

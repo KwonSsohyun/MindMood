@@ -57,16 +57,12 @@ const DiaryEntryForm = observer(() => {
 
     // ▶ 다음 단계로 이동
     const handleNextStep = () => {
-        console.log('isDatePickerOpen:', isDatePickerOpen);
-        console.log('현재 날짜:', new Date().toISOString());
-        console.log('선택된 날짜:', startDate.toISOString());
-
         if (!isDatePickerOpen) {
             diaryStore.entryDate = startDate.toISOString(); // 선택된 날짜 저장
         } else {
             diaryStore.entryDate = new Date().toISOString(); // 현재 날짜 저장
         }
-        console.log('저장된 날짜:', diaryStore.entryDate);
+        // console.log('저장된 날짜:', diaryStore.entryDate);
 
         setCurrentStep((prev) => Math.min(prev + 1, steps.length)); // 단계가 6을 초과하지 않도록 설정
         diaryStore.userId = user.user_id;
@@ -80,9 +76,9 @@ const DiaryEntryForm = observer(() => {
     // ▶ 일기 작성일
     const handleDateChange = (date) => {
         setStartDate(date);
-        console.log("날짜저장 date : ", date);
+        // console.log("날짜저장 date : ", date);
         diaryStore.entryDate = date.toISOString(); // 'YYYY-MM-DD' 형식으로 저장
-        console.log("날짜저장 diaryStore.entryDate : ", diaryStore.entryDate);
+        // console.log("날짜저장 diaryStore.entryDate : ", diaryStore.entryDate);
         setIsDatePickerOpen(false);
     };
 
@@ -134,7 +130,9 @@ const DiaryEntryForm = observer(() => {
         {currentStep === 1 &&
             <Flex flexDirection="column" mb={6}>
                 <Flex direction="column" p={4}>
-                    <Text fontSize="ml" fontWeight="bold" color="gray.500">{user.user_id}님 오늘의 감정은 어때요?</Text>
+                    {user && ( 
+                        <Text fontSize="ml" fontWeight="bold" color="gray.500">{user.user_id}님 오늘의 감정은 어때요?</Text>
+                    )}
                     <Flex alignItems="center" alignContent="center">
                         <Text fontSize="2xl" fontWeight="bold" color="#2C6E49" mr={1}>
                             {startDate.toLocaleDateString('ko-KR')}

@@ -5,7 +5,7 @@
  * - 최근 한 달간의 일기 목록
  * - 각 일기 선택 시 DiaryDetail 컴포넌트로 이동
  */
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Button, Flex, Text, VStack, Tag, Icon } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { FaRegSadCry, FaRegSmile, FaUserCircle } from 'react-icons/fa';

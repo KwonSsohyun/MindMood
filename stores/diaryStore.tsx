@@ -12,6 +12,7 @@ import axios from 'axios';
 import { UserStore } from './UserStore';
 
 export class DiaryStore {
+
     // ▶ 일기 필드
     private diary_seq: number;       // 고유 식별자
     private user_id: string;         // 사용자 ID
@@ -194,11 +195,35 @@ export class DiaryStore {
         this.update_date = updateDate;
     }
 
+
+    // ▶ 전체 필드값 반환 메서드
+    getDiaryData() {
+        return {
+            diarySeq: this.diary_seq,
+            userId: this.user_id,
+            moodLevel: this.mood_level,
+            moodEmoji: this.mood_emoji,
+            eventInfo: this.event_info,
+            eventWith: this.event_with,
+            emotionType: this.emotion_type,
+            emotionDetail: this.emotion_detail,
+            behaviorStyle: this.behavior_style,
+            behaviorEffect: this.behavior_effect,
+            behaviorReason: this.behavior_reason,
+            resultOutcome: this.result_outcome,
+            resultPlan: this.result_plan,
+            selfGoal: this.self_goal,
+            entryDate: this.entry_date,
+            createDate: this.create_date,
+            updateDate: this.update_date,
+        };
+    }
+
+
     // ▶ 스토어 리셋 메서드
     resetStore = () => {
         Object.assign(this, {
             diary_seq: null,
-            user_id: '',
             mood_level: null,
             mood_emoji: '',
             event_info: '',
@@ -237,7 +262,7 @@ export class DiaryStore {
         };
         try {
             const response = await axios.post('/api/createDiary', diaryData);
-            console.log('일기 저장 성공 :', response.data);
+            // console.log('일기 저장 성공 :', response.data);
 
             // UserStore의 fetchUserData 호출하여 최신값으로 업데이트
             try {
@@ -261,4 +286,42 @@ export class DiaryStore {
             }
         }
     }
+
+    // ▶ 일기 데이터 수정
+    async updateDiaryEntry() {
+        try {
+            const updatedDiary = this.getDiaryData();
+            // console.log("updatedDiary : ", updatedDiary);
+            const response = await axios.put(`/api/updateDiary/${updatedDiary.diarySeq}`, updatedDiary, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            // console.log('일기 수정 성공 :', response.data);
+    
+            await this.userStore.fetchUserData(updatedDiary.userId); // 최신 데이터 갱신
+
+            this.resetStore(); // 저장 후 필드 초기화
+
+        } catch (error) {
+            console.error('일기 수정 실패 :', error.message);
+            throw new Error('일기 수정 중 오류가 발생했습니다.');
+        }
+    }
+
+
+    // ▶ 일기 데이터 삭제
+    async deleteDiaryEntry(diaryId) {
+        try {
+            const response = await axios.delete(`/api/deleteDiary/${diaryId}`);
+            // console.log('일기 삭제 성공 :', response.data);
+
+            await this.userStore.fetchUserData(this.user_id); // 최신 데이터 갱신
+
+        } catch (error) {
+            console.error('일기 삭제 실패 :', error.message);
+            throw new Error('일기 삭제 중 오류가 발생했습니다.');
+        }
+    }
+
 }
