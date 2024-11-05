@@ -8,7 +8,7 @@
 | `email`          | VARCHAR(100)   | UNIQUE            | NULL 가능                                                   | 사용자 이메일                 |
 | `password`       | VARCHAR(100)   | NOT NULL          |                                                             | 사용자 비밀번호               |
 | `create_date`    | TIMESTAMP      | NOT NULL          | DEFAULT CURRENT_TIMESTAMP                                   | 계정 생성일                   |
-| `select_item`    | INT[]          |                   | **동적 설정 (트리거로 기본값 적용)**                        | 선택된 카테고리 ID 목록 (배열) |
+| `select_item`    | INT[]          |                   | {1,2,3,4,5,6}                                               | 선택된 카테고리 ID 목록 (배열) |
 
 <br/>
 
@@ -22,7 +22,7 @@
 
 <br/>
 
-## 🗃️ 테이블명: `Diary` (일기)
+## 🗃️ 테이블명 : `Diary` (일기)
 ##### 카테고리 : ① mood(기분) | ② event(사건) | ③ emotion(감정) | ④ behavior(행동) | ⑤ result(결과) | ⑥ self(제안)
 
 | 컬럼명            | 데이터 타입           | 제약 조건                          | 기본값               | 설명                                      |
