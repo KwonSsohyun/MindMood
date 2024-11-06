@@ -17,7 +17,7 @@ import ButtonStyle from '../../common/ButtonStyle';
 export default function MoodCheck({ diaryStore, currentStep, onPrevious, onNext }) {
 
     // ● 선택된 감정 상태(mood_emoji)
-    const [moodEmoji, setMoodEmoji] = useState(null);
+    const [moodEmoji, setMoodEmoji] = useState("");
     // ● 감정 강도 상태(mood_level)
     const [moodLevel, setMoodLevel] = useState(1);
 

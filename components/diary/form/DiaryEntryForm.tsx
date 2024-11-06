@@ -4,12 +4,12 @@
  * 감정 일기 작성 상위 컴포넌트
  * - 각 섹션 관리 : MoodCheck, EventRecord, EmotionAnalysis, BehaviorAnalysis, ResultEvaluation, SelfSuggestion
  */
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { observer } from 'mobx-react';
 import { useStore } from '../../../stores'; // MobX 스토어 가져오기
 import { useSession } from '../../../context/SessionContext';
 
-import { Flex, Box, Text, IconButton, Button } from '@chakra-ui/react';
+import { Flex, Box, Text, IconButton, useToast } from '@chakra-ui/react';
 import { CalendarIcon } from '@chakra-ui/icons';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -29,11 +29,42 @@ const DiaryEntryForm = observer(() => {
     const { user } = useSession();
 
     // ▶ MobX 스토어 인스턴스 가져오기
-    const { diaryStore } = useStore();
+    const { userStore, diaryStore } = useStore();
 
     // ▶ 일기 작성일
     const [startDate, setStartDate] = useState(new Date());
     const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+    const [excludedDates, setExcludedDates] = useState<Date[]>([]);
+
+    const toast = useToast();
+
+    // toast가 이미 실행되었는지 추적하는 ref
+    const hasShownToast = useRef(false);
+
+    // ▶ 작성된 날짜 목록을 가져오기 위한 초기화
+    useEffect(() => {
+        const fetchExcludedDates = async () => {
+            await userStore.getExistingDates(); // 비동기 데이터 호출
+            const dates = userStore.userExistingDates.map(date => new Date(date)); // 문자열을 Date 객체로 변환
+            setExcludedDates(dates); // 변환된 Date 객체 배열 설정
+
+            // 초기 날짜가 작성된 날짜 목록에 포함되었고, 아직 toast를 표시하지 않은 경우만 실행
+            if (
+                dates.some(date => date.toISOString().split('T')[0] === startDate.toISOString().split('T')[0]) && 
+                !hasShownToast.current
+            ) {
+                toast({
+                    title: "이미 같은 날에 저장된 일기가 있습니다. 다른 날짜를 선택해 주세요.",
+                    status: "warning",
+                    duration: 4000,
+                    isClosable: true,
+                });
+                hasShownToast.current = true; // toast가 이미 실행되었음을 표시
+            }
+        };
+        fetchExcludedDates();
+    }, []); // 빈 배열을 의존성으로 설정하여 처음 한 번만 실행
+
 
     // ▶ 현재 단계 상태 {1,2,3,4,5,6}
     /*
@@ -75,10 +106,21 @@ const DiaryEntryForm = observer(() => {
 
     // ▶ 일기 작성일
     const handleDateChange = (date) => {
+        const dateString = date.toISOString().split('T')[0];
+
+        if (userStore.userExistingDates.includes(dateString)) {
+            toast({
+                title: "이미 같은 날에 저장된 일기가 있습니다.",
+                status: "warning",
+                duration: 3000,
+                isClosable: true,
+            });
+            return;
+        }
+
         setStartDate(date);
-        // console.log("날짜저장 date : ", date);
+        userStore.userExistingDates = date.toISOString();
         diaryStore.entryDate = date.toISOString(); // 'YYYY-MM-DD' 형식으로 저장
-        // console.log("날짜저장 diaryStore.entryDate : ", diaryStore.entryDate);
         setIsDatePickerOpen(false);
     };
 
@@ -157,6 +199,7 @@ const DiaryEntryForm = observer(() => {
                                 locale={ko}
                                 inline // 인라인으로 표시
                                 maxDate={new Date()} // 현재 날짜 이전 선택 불가
+                                excludeDates={excludedDates}
                             />
                         </Flex>
                     )}

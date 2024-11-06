@@ -20,11 +20,11 @@ import ButtonStyle from '../../common/ButtonStyle';
 export default function BehaviorAnalysis({ diaryStore, currentStep, onPrevious, onNext }) {
 
     // ● 행동 기록(behavior_style)
-    const [behaviorStyle, setBehaviorStyle] = useState(null);
+    const [behaviorStyle, setBehaviorStyle] = useState("");
     // ● 행동 영향(behavior_effect)
-    const [behaviorEffect, setBehaviorEffect] = useState(null);
+    const [behaviorEffect, setBehaviorEffect] = useState("");
     // ● 미표현 이유(behavior_reason)
-    const [behaviorReason, setBehaviorReason] = useState(null);
+    const [behaviorReason, setBehaviorReason] = useState("");
 
     // ▶ MobX 스토어 저장 및 다음 단계 이동
     const handleNext = () => {

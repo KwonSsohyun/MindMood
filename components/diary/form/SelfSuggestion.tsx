@@ -17,7 +17,8 @@ import { useRouter } from 'next/router';
 export default function SelfSuggestion({ diaryStore, currentStep, onPrevious, onNext }) {
 
     // ● 느낀점 및 다짐(self_goal)
-    const [selfGoal, setSelfGoal] = useState(null);
+    const [selfGoal, setSelfGoal] = useState("");
+
     const toast = useToast(); // Toast 훅
     const router = useRouter(); // Router 훅
 

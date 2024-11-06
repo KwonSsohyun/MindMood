@@ -10,7 +10,7 @@ import UserSignupForm from '../components/auth/UserSignupForm';
 
 export default function signup() {
    return <>
-         <Box as="main" width={{ base: "100%", md: "70%" }} mx="auto" mt="0px" mb="100px">
+         <Box as="main" width={{ base: "100%", md: "70%" }} mx="auto" mt="10px" mb="100px">
             <UserSignupForm />
          </Box>
    </>

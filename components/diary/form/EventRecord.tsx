@@ -18,9 +18,9 @@ import ButtonStyle from '../../common/ButtonStyle';
 export default function EventRecord({ diaryStore, currentStep, onPrevious, onNext }) {
 
     // ● 주요 사건(event_info)
-    const [eventInfo, setEventInfo] = useState(null);
+    const [eventInfo, setEventInfo] = useState("");
     // ● 함께한 사람(event_with)
-    const [eventWith, setEventWith] = useState(null);
+    const [eventWith, setEventWith] = useState("");
     // ● 사용자 입력 상태
     const [customPerson, setCustomPerson] = useState('');
     const [isEditing, setIsEditing] = useState(false);

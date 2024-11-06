@@ -7,7 +7,7 @@
  */
 import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
-import { Flex, IconButton, HStack, Box, Text, Center, Spinner } from '@chakra-ui/react';
+import { Flex, IconButton, HStack, Box, Text, Center, Spinner, useMediaQuery } from '@chakra-ui/react';
 import { Button, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter } from '@chakra-ui/react';
 import { FaArrowLeft, FaRegEdit, FaRegTrashAlt, FaSave } from 'react-icons/fa';
 import { useStore } from '../../../stores';
@@ -20,6 +20,8 @@ export default function DiaryDetail() {
     const cancelRef = useRef();
     const [isDialogOpen, setIsDialogOpen] = useState(false); // 수정 팝업 상태
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false); // 삭제 팝업 상태
+
+    const [isMobile] = useMediaQuery("(max-width: 480px)"); // 모바일 크기 기준
 
     const router = useRouter();
     const { id } = router.query; // URL에서 ID 추출
@@ -136,6 +138,7 @@ export default function DiaryDetail() {
                         top="40%" // 수직 중앙을 위해 50% 이동
                         transform="translateY(-50%)" // 정확한 수직 중앙 배치
                         position="relative" // 위치 조정
+                        {...(isMobile && { maxWidth: "90%", width: "80%" })} // 모바일일 때만 maxWidth와 width 적용
                     >
                         <AlertDialogHeader fontSize="lg" fontWeight="bold">
                             일기 삭제
@@ -172,6 +175,7 @@ export default function DiaryDetail() {
                         top="40%" // 수직 중앙을 위해 50% 이동
                         transform="translateY(-50%)" // 정확한 수직 중앙 배치
                         position="relative" // 위치 조정
+                        {...(isMobile && { maxWidth: "90%", width: "80%" })} // 모바일일 때만 maxWidth와 width 적용
                     >
                         <AlertDialogHeader fontSize="lg" fontWeight="bold">
                             일기 수정

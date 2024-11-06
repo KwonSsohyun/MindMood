@@ -18,9 +18,9 @@ import ButtonStyle from '../../common/ButtonStyle';
 export default function EmotionAnalysis({ diaryStore, currentStep, onPrevious, onNext }) {
 
     // ● 주요 감정(emotion_type)
-    const [emotionType, setEmotionType] = useState(null);
+    const [emotionType, setEmotionType] = useState("");
     // ● 감정 이유(emotion_detail)
-    const [emotionDetail, setEmotionDetail] = useState(null);
+    const [emotionDetail, setEmotionDetail] = useState("");
 
     // ▶ MobX 스토어 저장 및 다음 단계 이동
     const handleNext = () => {

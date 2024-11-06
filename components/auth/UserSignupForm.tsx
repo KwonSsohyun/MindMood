@@ -105,6 +105,7 @@ export default function UserSignupForm() {
             align="center" 
             justify="center" 
             height="100vh" 
+            mt={10}
         >
             <Box 
                 p={6} 

@@ -18,9 +18,9 @@ import ButtonStyle from '../../common/ButtonStyle';
 export default function ResultEvaluation({ diaryStore, currentStep, onPrevious, onNext }) {
 
     // ● 사건 결과(result_outcome)
-    const [resultOutcome, setResultOutcome] = useState(null);
+    const [resultOutcome, setResultOutcome] = useState("");
     // ● 미래 행동 계획(result_plan)
-    const [resultPlan, setResultPlan] = useState(null);
+    const [resultPlan, setResultPlan] = useState("");
 
     // ▶ MobX 스토어 저장 및 다음 단계 이동
     const handleNext = () => {
