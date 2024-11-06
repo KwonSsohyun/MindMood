@@ -1,6 +1,9 @@
+# Node.js modules
 node_modules/
 package-lock.json
 
-# Keep environment variables out of version control
+# Next.js cache
+.next/cache
 
-# .env
+# Environment variables
+.env
