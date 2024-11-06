@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST="{}"
+self.__REACT_LOADABLE_MANIFEST='{"components\\\\chart\\\\DiaryEntryChart.tsx -> ./LineChart":{"id":34180,"files":["static/chunks/154-dab2364fb4894bba.js","static/chunks/222.ba9cf0515a0df470.js","static/chunks/88.fe1320180f5c1aba.js","static/chunks/180.90b69065e671ee55.js"]},"components\\\\chart\\\\DiaryEntryChart.tsx -> ./PieChart":{"id":10532,"files":["static/chunks/154-dab2364fb4894bba.js","static/chunks/222.ba9cf0515a0df470.js","static/chunks/532.4d67736960d9086c.js"]}}';

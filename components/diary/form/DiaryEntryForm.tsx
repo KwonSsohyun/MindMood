@@ -12,7 +12,6 @@ import { useSession } from '../../../context/SessionContext';
 import { Flex, Box, Text, IconButton, useToast } from '@chakra-ui/react';
 import { CalendarIcon } from '@chakra-ui/icons';
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/locale'; 
 import 'moment/locale/ko';
 
@@ -97,11 +96,17 @@ const DiaryEntryForm = observer(() => {
 
         setCurrentStep((prev) => Math.min(prev + 1, steps.length)); // 단계가 6을 초과하지 않도록 설정
         diaryStore.userId = user.user_id;
+
+        // 스크롤을 맨 위로 이동
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     // ▶ 이전 단계로 이동
     const handlePrevStep = () => {
         setCurrentStep((prev) => Math.max(prev - 1, 1)); // 단계가 1 미만이 되지 않도록 설정
+
+        // 스크롤을 맨 위로 이동
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     // ▶ 일기 작성일

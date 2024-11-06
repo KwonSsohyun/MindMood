@@ -1,10 +1,22 @@
-// ButtonComponent.tsx
+/**
+ * ▶ ButtonStyle 컴포넌트
+ *
+ * 공통 버튼 레이아웃
+ */
 import React from 'react';
 import { Button, Flex } from '@chakra-ui/react';
 
 export default function ButtonStyle({ onPrevious, onNext, currentStep, isNextDisabled }) {
     return <>
-        <Flex direction="row" gap={5} p={4}> 
+        <Flex 
+            direction="row" 
+            gap={5} 
+            p={4} 
+            width={{ base: "full", md: "50%" }} 
+            justifyContent="center" 
+            alignItems="center"
+            mx="auto" // 수평 중앙 정렬
+        >
             {currentStep !== 1 && (<Button // 첫 단계에서는 비활성화
                 bg="gray.300" 
                 color="white" 

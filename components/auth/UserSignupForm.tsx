@@ -101,17 +101,13 @@ export default function UserSignupForm() {
     };
 
     return <>
-        <Flex 
-            align="center" 
-            justify="center" 
-            height="100vh" 
-            mt={10}
-        >
+        <Flex align="center" justify="center" height="100vh">
             <Box 
                 p={6} 
                 borderRadius="md" 
                 bg="white"
                 w={"80%"}
+                mt={10}
             >
                 <Text fontSize="2xl" fontWeight="bold" color="#2C6E49" mb={10}>회원가입</Text>
                 <form onSubmit={handleSubmit}>

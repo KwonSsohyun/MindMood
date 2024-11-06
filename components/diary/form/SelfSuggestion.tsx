@@ -85,7 +85,12 @@ export default function SelfSuggestion({ diaryStore, currentStep, onPrevious, on
             </Flex>
         </Flex>
 
-        <Flex direction="row">
+        <Flex direction="row" 
+            width={{ base: "full", md: "50%" }} 
+            justifyContent="center" 
+            alignItems="center"
+            mx="auto"
+        >
             <ButtonStyle 
                 onPrevious={onPrevious} 
                 onNext={handleNext} 
@@ -98,7 +103,8 @@ export default function SelfSuggestion({ diaryStore, currentStep, onPrevious, on
                 width="full"
                 px={6}
                 py={6}
-                mt={8}
+                mt={4}
+                mr={4}
                 onClick={handleSave}
                 isDisabled={ !selfGoal }
                 _hover={{ bg: "#2C6E49" }}
@@ -107,5 +113,6 @@ export default function SelfSuggestion({ diaryStore, currentStep, onPrevious, on
                 작성 완료
             </Button>
         </Flex>
+
     </>
 }

@@ -10,7 +10,7 @@ import prisma from '../../lib/prisma';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'GET') {
         const userId = req.query.userId as string;
-        console.log("전체 일기 userId : ", userId)
+        // console.log("전체 일기 userId : ", userId)
 
         try {
             const diaries = await prisma.diary.findMany({

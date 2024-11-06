@@ -13,9 +13,7 @@ import { IconButton, Box, Flex, Text, Button } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'moment/locale/ko';
-import styles from '../../styles/calendar.module.css';
 
 // Moment.js의 로컬라이저를 한국어로 설정
 moment.locale('ko');

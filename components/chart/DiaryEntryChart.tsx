@@ -10,9 +10,11 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { FaRegSadCry } from 'react-icons/fa';
 import { observer } from 'mobx-react';
 import { useStore } from '../../stores';
+import dynamic from 'next/dynamic';
 
-import PieChart from './PieChart';
-import LineChart from './LineChart';
+// dynamic import로 설정하여 클라이언트 측에서만 로드
+const PieChart = dynamic(() => import('./PieChart'), { ssr: false });
+const LineChart = dynamic(() => import('./LineChart'), { ssr: false });
 
 
 const DiaryEntryChart = observer(() => {
@@ -43,7 +45,7 @@ const DiaryEntryChart = observer(() => {
     });
 
 
-    // ▶ 원 그래프
+    // ▶ 원 그래프 데이터
     const pieChartData = filteredDiaries.reduce((acc, diary) => {
         const existing = acc.find(item => item.id === diary.mood_emoji);
         if (existing) {
@@ -55,11 +57,15 @@ const DiaryEntryChart = observer(() => {
     }, []);
 
 
-    // ▶ 선 그래프
+    // ▶ 선 그래프 데이터
+    // 날짜 오름차순
+    const sortedDiaries = [...filteredDiaries].sort(
+        (a, b) => new Date(a.entry_date).getTime() - new Date(b.entry_date).getTime()
+    );
     const lineChartData = [
         {
             id: '감정 추이',
-            data: filteredDiaries.map(diary => ({
+            data: sortedDiaries.map(diary => ({
                 x: new Date(diary.entry_date).getDate().toString(),
                 y: diary.mood_level,
             })),
