@@ -85,9 +85,11 @@ npx prisma migrate deploy
 
 ### API
 `pages/api` 폴더 내에 데이터베이스와 상호작용하는 API 엔드포인트 구현
+- **`session`** : 사용자 세션 관리 API
 - **`createUser`** : 사용자 생성 API
 - **`loginUser`** : 사용자 로그인 API
 - **`getDiaries`** : 전체 일기 데이터 조회 API
+- **`getExistingDates`** : 전체 일기 작성일 데이터 조회 API
 - **`createDiary`** : 일기 데이터 저장 API
 - **`updateDiary`** : 특정 일기 데이터 수정 API
 - **`deleteDiary`** : 특정 일기 데이터 삭제 API
