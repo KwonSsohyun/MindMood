@@ -201,6 +201,7 @@ npm start             # 서버 실행
 │   │   ├── createUser.ts			# 사용자 데이터 생성
 │   │   ├── loginUser.ts			# 사용자 로그인
 │   │   ├── getDiaries.ts			# 전체 일기 데이터 조회
+│   │   ├── getExistingDates.ts			# 전체 일기 작성일 데이터 조회
 │   │   ├── createDiary.ts			# 일기 데이터 저장
 │   │   ├── 📁 updateDiary		        # 특정 ID 일기 데이터 수정
 │   │   │   └── [id].ts		               
