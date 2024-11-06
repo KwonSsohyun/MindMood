@@ -171,6 +171,7 @@ npm start             # 서버 실행
 │   │   ├── Footer.tsx				# 푸터
 │   │   └── Sidebar.tsx			        # 사이드바
 │   ├── 📁 common                              # 공통 사용 컴포넌트
+│   │   ├── TopButton.tsx		        # 탑 버튼
 │   │   └── ButtonStyle.tsx		        # 버튼 스타일
 │   ├── 📁 auth                                # 사용자 인증 컴포넌트
 │   │   ├── UserSignupForm.tsx		        # 회원가입
