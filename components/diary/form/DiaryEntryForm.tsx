@@ -8,6 +8,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { observer } from 'mobx-react';
 import { useStore } from '../../../stores'; // MobX 스토어 가져오기
 import { useSession } from '../../../context/SessionContext';
+import { useRouter } from 'next/router';
 
 import { Flex, Box, Text, IconButton, useToast } from '@chakra-ui/react';
 import { CalendarIcon } from '@chakra-ui/icons';
@@ -30,8 +31,23 @@ const DiaryEntryForm = observer(() => {
     // ▶ MobX 스토어 인스턴스 가져오기
     const { userStore, diaryStore } = useStore();
 
+    // ▶ URL에서 `date` 쿼리 파라미터 추출
+    const router = useRouter();
+    const { date } = router.query;
+
+    // initialDateTime을 한국 시간 기준으로 12:00으로 설정
+    const initialDateTime = date 
+        ? new Date(`${date}T12:00:00+09:00`)
+        : new Date();
+
+    // UTC로 변환하여 데이터베이스에 저장
+    // const diaryDate = initialDateTime.toISOString();
+    // console.log("저장될 diaryStore.entryDate : ", diaryDate);
+    // console.log("사용자가 선택한 로컬 날짜 : ", date);
+
+
     // ▶ 일기 작성일
-    const [startDate, setStartDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(initialDateTime);
     const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
     const [excludedDates, setExcludedDates] = useState<Date[]>([]);
 
@@ -40,20 +56,30 @@ const DiaryEntryForm = observer(() => {
     // toast가 이미 실행되었는지 추적하는 ref
     const hasShownToast = useRef(false);
 
-    // ▶ 작성된 날짜 목록을 가져오기 위한 초기화
+    // ▶ 작성된 날짜 목록을 초기화하고 표시
     useEffect(() => {
         const fetchExcludedDates = async () => {
-            await userStore.getExistingDates(); // 비동기 데이터 호출
-            const dates = userStore.userExistingDates.map(date => new Date(date)); // 문자열을 Date 객체로 변환
+            // 1. 비동기로 기존 일기 작성 날짜 가져오기
+            await userStore.getExistingDates();
+
+            // 2. UTC 날짜를 로컬 시간(한국 표준시)으로 변환하여 제외 날짜 배열에 추가
+            const dates = userStore.userExistingDates.map(date => {
+                const localDate = new Date(date);
+                return new Date(localDate.getFullYear(), localDate.getMonth(), localDate.getDate());
+            });
+
             setExcludedDates(dates); // 변환된 Date 객체 배열 설정
 
-            // 초기 날짜가 작성된 날짜 목록에 포함되었고, 아직 toast를 표시하지 않은 경우만 실행
+            // 3. 초기 날짜와 비교하여 이미 작성된 날짜인지 확인
             if (
-                dates.some(date => date.toISOString().split('T')[0] === startDate.toISOString().split('T')[0]) && 
+                dates.some(date => 
+                    date.toLocaleDateString('ko-KR') === startDate.toLocaleDateString('ko-KR')
+                ) && 
                 !hasShownToast.current
             ) {
                 toast({
-                    title: "이미 같은 날에 저장된 일기가 있습니다. 다른 날짜를 선택해 주세요.",
+                    title: "이미 작성된 날짜",
+                    description: "다른 날짜를 선택하세요.",
                     status: "warning",
                     duration: 4000,
                     isClosable: true,
@@ -62,7 +88,7 @@ const DiaryEntryForm = observer(() => {
             }
         };
         fetchExcludedDates();
-    }, []); // 빈 배열을 의존성으로 설정하여 처음 한 번만 실행
+    }, [startDate, userStore]);
 
 
     // ▶ 현재 단계 상태 {1,2,3,4,5,6}
@@ -115,9 +141,10 @@ const DiaryEntryForm = observer(() => {
 
         if (userStore.userExistingDates.includes(dateString)) {
             toast({
-                title: "이미 같은 날에 저장된 일기가 있습니다.",
+                title: "이미 작성된 날짜",
+                description: "다른 날짜를 선택하세요.",
                 status: "warning",
-                duration: 3000,
+                duration: 4000,
                 isClosable: true,
             });
             return;

@@ -45,7 +45,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             // console.log('existingDiary : ', existingDiary);
             // 이미 같은 날 일기가 존재하면 에러 응답
             if (existingDiary) {
-                return res.status(400).json({ error: '이미 같은 날에 저장된 일기가 있습니다.' });
+                return res.status(400).json({ error: '해당 날짜에는 이미 일기가 작성되었습니다.' });
             }
 
             // 일기 데이터 저장
