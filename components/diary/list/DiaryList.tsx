@@ -12,19 +12,21 @@ import { FaRegSadCry, FaRegSmile, FaUserCircle } from 'react-icons/fa';
 import { useStore } from '../../../stores';
 import { observer } from 'mobx-react';
 import { useRouter } from 'next/router';
+import { useSession } from '../../../context/SessionContext';
 
 const DiaryList = observer(() => {
     const { userStore } = useStore();
+    const { user } = useSession(); // 세션 정보 가져오기
     const diaries = userStore.diaries; // 전체 일기 목록
     const router = useRouter();
     const [currentDate, setCurrentDate] = useState(new Date()); // 현재 날짜 상태
 
-    // 사용자 ID가 있을 경우에만 일기 목록을 가져옵니다.
+    // 세션이 유효할 경우 일기 목록을 가져옵니다.
     useEffect(() => {
-        if (userStore.userId) {
-            userStore.fetchUserData(userStore.userId);
+        if (user?.user_id) {
+            userStore.fetchUserData(user.user_id);
         }
-    }, [userStore]);
+    }, [user, userStore]);
 
     const handleDiaryClick = (diarySeq) => {
         router.push(`/diary/${diarySeq}`); // 클릭한 일기의 상세 페이지로 이동

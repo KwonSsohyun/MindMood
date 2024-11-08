@@ -35,26 +35,41 @@ export class DiaryStore {
     constructor(private userStore: UserStore) {
         makeAutoObservable(this);
 
-        // entry_date가 변경될 때마다 UserStore의 데이터를 새로 가져오기
-        reaction(
-            () => this.entry_date, // 관찰할 상태
-            async (newEntryDate) => {
-                if (this.user_id) { // user_id가 설정되어 있을 경우에만 호출
-                    await this.userStore.fetchUserData(this.user_id);
-                }
-            }
-        );
+        // 브라우저에서만 로컬 스토리지에서 데이터를 불러옴
+        if (typeof window !== 'undefined') {
+            this.loadFromLocalStorage();
+        }
 
-        // update_date가 변경될 때마다 UserStore의 데이터를 새로 가져오기
+        // 일기 저장 시마다 로컬 스토리지에 저장
         reaction(
-            () => this.update_date, // 관찰할 상태
-            async (newUpdateDate) => {
-                if (this.user_id) { // user_id가 설정되어 있을 경우에만 호출
-                    await this.userStore.fetchUserData(this.user_id);
-                }
-            }
+            () => this.getDiaryData(), 
+            () => this.saveToLocalStorage()
         );
-}
+    }
+
+    // 데이터를 로컬 스토리지에 저장
+    saveToLocalStorage() {
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('diaryStore', JSON.stringify(this.getDiaryData()));
+        }
+    }
+
+    // 로컬 스토리지에서 데이터를 불러오기
+    loadFromLocalStorage() {
+        if (typeof window !== 'undefined') {
+            const storedData = localStorage.getItem('diaryStore');
+            if (storedData) {
+                const parsedData = JSON.parse(storedData);
+                Object.assign(this, parsedData);
+            }
+        }
+    }
+    
+    // UserStore에서 user_id를 설정할 때 호출되는 메서드
+    setUserId(userId: string) {
+        this.user_id = userId;
+        this.saveToLocalStorage();
+    }
 
     // ▶ Getter
     get diarySeq() {
@@ -240,7 +255,7 @@ export class DiaryStore {
             create_date: '',
             update_date: ''
         });
-    };    
+    };  
 
     // ▶ 데이터베이스 저장 메서드(API 호출하여 저장)
     async saveDiaryEntry() {

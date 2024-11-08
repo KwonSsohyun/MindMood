@@ -7,20 +7,62 @@
  * - MobX의 관찰 가능 상태로 UI 자동 업데이트
  * - 리액트 컴포넌트와 실시간 연동
  */
-import { makeAutoObservable, action, runInAction } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 import axios from 'axios';
 import { Diary } from '../types/diary';
+import { DiaryStore } from './DiaryStore';
 
 export class UserStore {
     private user_id: string;
     private user_diaries: Diary[] = [];
     private user_existingDates: string[] = [];
+    public diaryStore: DiaryStore; // DiaryStore의 참조
 
-    constructor() {
-        makeAutoObservable(this), {
-            fetchUserData: action, // fetchUserData를 action으로 지정
-        };
-    }    
+    constructor(diaryStore: DiaryStore) {
+
+        this.diaryStore = diaryStore; // DiaryStore 인스턴스를 전달받아 초기화
+        makeAutoObservable(this);
+
+        // 페이지 로드 시 LocalStorage에서 데이터 불러오기
+        if (typeof window !== 'undefined') {
+            this.loadFromLocalStorage();
+        }
+    }
+
+    // Local Storage에 데이터 저장
+    saveToLocalStorage() {
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('userStore', JSON.stringify({
+                user_id: this.user_id,
+                user_diaries: this.user_diaries,
+                user_existingDates: this.user_existingDates,
+            }));
+        }
+    }
+
+    // LocalStorage에서 데이터 불러오기
+    loadFromLocalStorage() {
+        if (typeof window !== 'undefined') {
+            const storedData = localStorage.getItem('userStore');
+            if (storedData) {
+                const parsedData = JSON.parse(storedData);
+                this.user_id = parsedData.user_id;
+                this.user_diaries = parsedData.user_diaries;
+                this.user_existingDates = parsedData.user_existingDates;
+
+                if (this.diaryStore) {
+                    this.diaryStore.setUserId(this.user_id);
+                }
+            }
+        }
+    }
+
+    // DiaryStore와 user_id 동기화 메서드
+    setUserId(userId: string) {
+        this.user_id = userId;
+        this.diaryStore?.setUserId(userId); // DiaryStore에도 설정
+        this.saveToLocalStorage();
+    }
 
     // ▶ Getter
     get userId() {
@@ -37,7 +79,7 @@ export class UserStore {
 
     // ▶ Setter
     set userId(userId: string) {
-        this.user_id = userId;
+        this.setUserId(userId); // DiaryStore와 동기화
     }
 
     set userExistingDates(userExistingDates: string[]) {
@@ -46,11 +88,12 @@ export class UserStore {
 
     // ▶ 전체 일기 데이터 호출 메서드
     async fetchUserData(userId: string) {
-        const response = await axios.get(`/api/getDiaries?userId=${userId}`);
+        const response = await axios.get(`/api/getDiaries?userId=${userId}`, {
+            headers: { 'Cache-Control': 'no-cache' }
+        });
         runInAction(() => {
             this.user_diaries = response.data;
-            // 응답에서 user_id만 추출해서 저장
-            this.user_id = userId;
+            this.setUserId(userId); // DiaryStore와 동기화
         });
 
     } catch (error) {
@@ -60,10 +103,10 @@ export class UserStore {
 
 
     // ▶ 작성된 날짜 목록 가져오기 메서드
-    async getExistingDates() {
+    async getExistingDates(userId: string) {
         try {
             const response = await axios.get(`/api/getExistingDates`, {
-                params: { userId: this.user_id }
+                params: { userId }
             });
             this.user_existingDates = response.data.existingDates;
             // console.log("userExistingDates : ", this.user_existingDates);

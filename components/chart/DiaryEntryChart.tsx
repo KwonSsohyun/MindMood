@@ -11,6 +11,7 @@ import { FaRegSadCry } from 'react-icons/fa';
 import { observer } from 'mobx-react';
 import { useStore } from '../../stores';
 import dynamic from 'next/dynamic';
+import { useSession } from '../../context/SessionContext';
 
 // dynamic import로 설정하여 클라이언트 측에서만 로드
 const PieChart = dynamic(() => import('./PieChart'), { ssr: false });
@@ -20,15 +21,16 @@ const LineChart = dynamic(() => import('./LineChart'), { ssr: false });
 const DiaryEntryChart = observer(() => {
 
     const { userStore } = useStore();
+    const { user } = useSession(); // 세션 정보 가져오기
     const diaries = userStore.diaries; // 전체 일기 목록
     const [currentDate, setCurrentDate] = useState(new Date()); // 현재 날짜 상태
 
     // 사용자 ID가 있을 경우에만 일기 목록을 가져옵니다.
     useEffect(() => {
-        if (userStore.userId) {
+        if (user?.userId) {
             userStore.fetchUserData(userStore.userId);
         }
-    }, [userStore]);
+    }, [user, userStore]);
 
     const handlePrevMonth = () => {
         setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() - 1, 1));

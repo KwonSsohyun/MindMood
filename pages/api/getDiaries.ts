@@ -8,8 +8,12 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '../../lib/prisma';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+
+    res.setHeader('Cache-Control', 'no-cache');
+
     if (req.method === 'GET') {
         const userId = req.query.userId as string;
+        // const userId = req.query.userId as string;
         // console.log("전체 일기 userId : ", userId)
 
         try {

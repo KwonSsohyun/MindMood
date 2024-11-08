@@ -3,7 +3,7 @@
  *
  * 공통 헤더 레이아웃
  */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, Flex, Text, Link, IconButton, Button, useToast, Drawer, DrawerBody, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton } from '@chakra-ui/react';
 import { useDisclosure } from '@chakra-ui/react';
 import { Spinner, Center } from '@chakra-ui/react';

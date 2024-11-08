@@ -35,6 +35,11 @@ const DiaryEntryForm = observer(() => {
     const router = useRouter();
     const { date } = router.query;
 
+    // 페이지 로드 시 스토어 초기화
+    useEffect(() => {
+        diaryStore.resetStore(); // 페이지 로드 시 resetStore 호출
+    }, [diaryStore]);
+
     // initialDateTime을 한국 시간 기준으로 12:00으로 설정
     const initialDateTime = date 
         ? new Date(`${date}T12:00:00+09:00`)
@@ -59,18 +64,20 @@ const DiaryEntryForm = observer(() => {
     // ▶ 작성된 날짜 목록을 초기화하고 표시
     useEffect(() => {
         const fetchExcludedDates = async () => {
-            // 1. 비동기로 기존 일기 작성 날짜 가져오기
-            await userStore.getExistingDates();
+            if (!user || !user.user_id) return; // user 또는 user_id가 null이면 종료
 
-            // 2. UTC 날짜를 로컬 시간(한국 표준시)으로 변환하여 제외 날짜 배열에 추가
+            // 1. 비동기로 기존 일기 작성 날짜 가져오기
+            await userStore.getExistingDates(user.user_id);
+
+            // 기존 날짜를 한국 시간 기준 12:00으로 설정한 Date 객체로 변환
             const dates = userStore.userExistingDates.map(date => {
-                const localDate = new Date(date);
-                return new Date(localDate.getFullYear(), localDate.getMonth(), localDate.getDate());
+                const localDate = new Date(new Date(date).setHours(12, 0, 0)); // 12:00으로 설정
+                return localDate;
             });
 
             setExcludedDates(dates); // 변환된 Date 객체 배열 설정
 
-            // 3. 초기 날짜와 비교하여 이미 작성된 날짜인지 확인
+            // 현재 선택된 날짜와 이미 작성된 날짜가 일치하는지 확인
             if (
                 dates.some(date => 
                     date.toLocaleDateString('ko-KR') === startDate.toLocaleDateString('ko-KR')
@@ -84,7 +91,7 @@ const DiaryEntryForm = observer(() => {
                     duration: 4000,
                     isClosable: true,
                 });
-                hasShownToast.current = true; // toast가 이미 실행되었음을 표시
+                hasShownToast.current = true;
             }
         };
         fetchExcludedDates();
@@ -116,7 +123,13 @@ const DiaryEntryForm = observer(() => {
         if (!isDatePickerOpen) {
             diaryStore.entryDate = startDate.toISOString(); // 선택된 날짜 저장
         } else {
-            diaryStore.entryDate = new Date().toISOString(); // 현재 날짜 저장
+            // 현재 날짜를 한국 시간 기준 12:00으로 설정
+            const kstDate = new Date();
+            kstDate.setHours(12, 0, 0, 0); // 한국 시간 기준 12:00으로 설정
+
+            // UTC로 변환하여 저장
+            diaryStore.entryDate = kstDate.toISOString();
+            // console.log("저장된 entryDate:", diaryStore.entryDate); // 예: "2024-11-08T03:00:00.000Z"
         }
         // console.log('저장된 날짜:', diaryStore.entryDate);
 
@@ -137,9 +150,14 @@ const DiaryEntryForm = observer(() => {
 
     // ▶ 일기 작성일
     const handleDateChange = (date) => {
-        const dateString = date.toISOString().split('T')[0];
+        // 사용자가 선택한 날짜를 한국 시간 기준 12:00으로 설정합니다.
+        const dateWithKSTNoon = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 12, 0, 0);
 
-        if (userStore.userExistingDates.includes(dateString)) {
+        // 한국 시간 기준 12:00으로 설정된 날짜를 UTC 시간으로 변환하여 저장
+        const utcDateString = dateWithKSTNoon.toISOString();
+
+        // 이미 작성한 날짜인지 확인
+        if (userStore.userExistingDates.includes(utcDateString.split('T')[0])) {
             toast({
                 title: "이미 작성된 날짜",
                 description: "다른 날짜를 선택하세요.",
@@ -150,9 +168,8 @@ const DiaryEntryForm = observer(() => {
             return;
         }
 
-        setStartDate(date);
-        userStore.userExistingDates = date.toISOString();
-        diaryStore.entryDate = date.toISOString(); // 'YYYY-MM-DD' 형식으로 저장
+        setStartDate(dateWithKSTNoon); // 선택한 날짜를 한국 시간 기준으로 설정
+        diaryStore.entryDate = utcDateString; // UTC로 변환된 날짜를 MobX 상태에 저장
         setIsDatePickerOpen(false);
     };
 

@@ -82,9 +82,16 @@ export default function Calendar() {
 
     // ▶ 날짜 선택 시 실행될 함수
     const handleSelectDate = async (date) => {
-        // 날짜 유효성 확인
-        if (!date || !(date instanceof Date) || isNaN(date.getTime()) || isNaN(new Date(date).getTime()) || date > today) {
+        // date가 없거나 유효하지 않으면 로그 출력 후 종료
+        if (!date || !isValidDate(date)) {
             console.warn("유효하지 않은 날짜가 선택되었습니다:", date);
+            return;
+        }
+
+        // 오늘 날짜 확인 (오늘 이후의 날짜 선택 방지)
+        const today = new Date();
+        if (date > today) {
+            console.warn("미래의 날짜는 선택할 수 없습니다:", date);
             return;
         }
 
@@ -92,14 +99,13 @@ export default function Calendar() {
             new Date(diary.entry_date).toDateString() === date.toDateString()
         );
 
-        // 사용자의 로컬 날짜를 기반으로 URL 쿼리 생성
+        // 한국 시간 기준의 날짜 문자열 생성
         const year = date.getFullYear();
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
         const day = date.getDate().toString().padStart(2, '0');
-        const localDateString = `${year}-${month}-${day}`; // 한국 시간대 기준의 날짜 문자열
+        const localDateString = `${year}-${month}-${day}`;
 
         try {
-            // 라우터가 준비되었는지 확인
             if (router.isReady) {
                 if (existingDiary) {
                     await router.push(`/diary/${existingDiary.diary_seq}`);
@@ -111,7 +117,6 @@ export default function Calendar() {
             console.error("라우팅 중 오류가 발생했습니다:", error);
         }
     };
-
 
     return <>
         <Box p={5} boxShadow="md" borderRadius="lg">
