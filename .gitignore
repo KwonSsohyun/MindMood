@@ -4,6 +4,8 @@ package-lock.json
 
 # Next.js cache
 .next/
+.idea
+data
 
 # Environment variables
 .env
