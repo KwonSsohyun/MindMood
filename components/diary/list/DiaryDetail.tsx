@@ -232,7 +232,7 @@ export default function DiaryDetail() {
                         <Flex>
                             <Box borderWidth="2px" borderRadius="lg" p={10} px={7} mb={4} w="100%">
                                 <Text fontSize="lg" fontWeight="bold" mb={5}>주요 사건</Text>
-                                <Text fontSize="sm" fontWeight="bold" color="gray.600">{diary.event_info}</Text>
+                                <Text fontSize="sm" fontWeight="bold" color="gray.600" whiteSpace="pre-line">{diary.event_info}</Text>
                             </Box>
                         </Flex>
                         <Flex>
@@ -251,13 +251,13 @@ export default function DiaryDetail() {
                         <Flex>
                             <Box borderWidth="2px" borderRadius="lg" p={10} px={7} mb={4} w="100%">
                                 <Text fontSize="lg" fontWeight="bold" mb={5}>주요 감정</Text>
-                                <Text fontSize="sm" fontWeight="bold" color="gray.600">{diary.emotion_type}</Text>
+                                <Text fontSize="sm" fontWeight="bold" color="gray.600" whiteSpace="pre-line">{diary.emotion_type}</Text>
                             </Box>
                         </Flex>
                         <Flex>
                             <Box borderWidth="2px" borderRadius="lg" p={10} px={7} mb={4} w="100%">
                                 <Text fontSize="lg" fontWeight="bold" mb={5}>감정 이유</Text>
-                                <Text fontSize="sm" fontWeight="bold" color="gray.600">{diary.emotion_detail}</Text>
+                                <Text fontSize="sm" fontWeight="bold" color="gray.600" whiteSpace="pre-line">{diary.emotion_detail}</Text>
                             </Box>
                         </Flex>
                     </Flex>
@@ -270,19 +270,19 @@ export default function DiaryDetail() {
                         <Flex>
                             <Box borderWidth="2px" borderRadius="lg" p={10} px={7} mb={4} w="100%">
                                 <Text fontSize="lg" fontWeight="bold" mb={5}>행동 기록</Text>
-                                <Text fontSize="sm" fontWeight="bold" color="gray.600">{diary.behavior_style}</Text>
+                                <Text fontSize="sm" fontWeight="bold" color="gray.600" whiteSpace="pre-line">{diary.behavior_style}</Text>
                             </Box>
                         </Flex>
                         <Flex>
                             <Box borderWidth="2px" borderRadius="lg" p={10} px={7} mb={4} w="100%">
                                 <Text fontSize="lg" fontWeight="bold" mb={5}>행동 영향</Text>
-                                <Text fontSize="sm" fontWeight="bold" color="gray.600">{diary.behavior_effect}</Text>
+                                <Text fontSize="sm" fontWeight="bold" color="gray.600" whiteSpace="pre-line">{diary.behavior_effect}</Text>
                             </Box>
                         </Flex>
                         <Flex>
                             <Box borderWidth="2px" borderRadius="lg" p={10} px={7} mb={4} w="100%">
                                 <Text fontSize="lg" fontWeight="bold" mb={5}>미표현 이유</Text>
-                                <Text fontSize="sm" fontWeight="bold" color="gray.600">{diary.behavior_reason}</Text>
+                                <Text fontSize="sm" fontWeight="bold" color="gray.600" whiteSpace="pre-line">{diary.behavior_reason}</Text>
                             </Box>
                         </Flex>
                     </Flex>
@@ -295,13 +295,13 @@ export default function DiaryDetail() {
                         <Flex>
                             <Box borderWidth="2px" borderRadius="lg" p={10} px={7} mb={4} w="100%">
                                 <Text fontSize="lg" fontWeight="bold" mb={5}>결과</Text>
-                                <Text fontSize="sm" fontWeight="bold" color="gray.600">{diary.result_outcome}</Text>
+                                <Text fontSize="sm" fontWeight="bold" color="gray.600" whiteSpace="pre-line">{diary.result_outcome}</Text>
                             </Box>
                         </Flex>
                         <Flex>
                             <Box borderWidth="2px" borderRadius="lg" p={10} px={7} mb={4} w="100%">
                                 <Text fontSize="lg" fontWeight="bold" mb={5}>원하는 행동</Text>
-                                <Text fontSize="sm" fontWeight="bold" color="gray.600">{diary.result_plan}</Text>
+                                <Text fontSize="sm" fontWeight="bold" color="gray.600" whiteSpace="pre-line">{diary.result_plan}</Text>
                             </Box>
                         </Flex>
                     </Flex>
@@ -314,7 +314,7 @@ export default function DiaryDetail() {
                         <Flex>
                             <Box borderWidth="2px" borderRadius="lg" p={10} px={7} mb={4} w="100%">
                                 <Text fontSize="lg" fontWeight="bold" mb={5}>느낀점 및 다짐</Text>
-                                <Text fontSize="sm" fontWeight="bold" color="gray.600">{diary.self_goal}</Text>
+                                <Text fontSize="sm" fontWeight="bold" color="gray.600" whiteSpace="pre-line">{diary.self_goal}</Text>
                             </Box>
                         </Flex>
                     </Flex>
